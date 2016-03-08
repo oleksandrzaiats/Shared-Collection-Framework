@@ -2,18 +2,16 @@ package se.lnu.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import se.lnu.application.dao.ArtifactDAO;
+import se.lnu.application.dao.CollectionDAO;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -39,27 +37,16 @@ public class SpringRootConfig {
     }
 
     @Bean
-    public HibernateJpaSessionFactoryBean sessionFactory() {
-        HibernateJpaSessionFactoryBean localSessionFactoryBean = new HibernateJpaSessionFactoryBean();
-        localSessionFactoryBean.setEntityManagerFactory(entityManagerFactory().getObject());
-        return localSessionFactoryBean;
+    public LocalSessionFactoryBean sessionFactory() {
+        LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
+        sessionFactoryBean.setDataSource(dataSource());
+        sessionFactoryBean.setHibernateProperties(getHibernateProperties());
+        sessionFactoryBean.setPackagesToScan("se.lnu");
+        return sessionFactoryBean;
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean entityManagerFactory =
-                new LocalContainerEntityManagerFactoryBean();
-
-        entityManagerFactory.setDataSource(dataSource());
-
-        // Classpath scanning of @Component, @Service, etc annotated class
-        entityManagerFactory.setPackagesToScan("se.lnu");
-
-        // Vendor adapter
-        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        entityManagerFactory.setJpaVendorAdapter(vendorAdapter);
-
-        // Hibernate properties
+    public Properties getHibernateProperties() {
         Properties additionalProperties = new Properties();
         additionalProperties.put(
                 "hibernate.dialect",
@@ -70,20 +57,18 @@ public class SpringRootConfig {
         additionalProperties.put(
                 "hibernate.hbm2ddl.auto",
                 env.getProperty("hibernate.hbm2ddl.auto"));
-        entityManagerFactory.setJpaProperties(additionalProperties);
 
-        return entityManagerFactory;
+        return additionalProperties;
     }
 
     /**
      * Declare the transaction manager.
      */
     @Bean
-    public JpaTransactionManager transactionManager() {
-        JpaTransactionManager transactionManager =
-                new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(
-                entityManagerFactory().getObject());
+    @Primary
+    public HibernateTransactionManager transactionManager() {
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory().getObject());
         return transactionManager;
     }
 
@@ -97,5 +82,26 @@ public class SpringRootConfig {
     @Bean
     public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
+    }
+
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        resolver.setDefaultEncoding("utf-8");
+        return resolver;
+    }
+
+    @Bean
+    public CollectionDAO collectionDAO() {
+        CollectionDAO collectionDAO = new CollectionDAO();
+        collectionDAO.setSessionFactory(sessionFactory().getObject());
+        return collectionDAO;
+    }
+
+    @Bean
+    public ArtifactDAO artifactDAO() {
+        ArtifactDAO artifactDAO = new ArtifactDAO();
+        artifactDAO.setSessionFactory(sessionFactory().getObject());
+        return artifactDAO;
     }
 }

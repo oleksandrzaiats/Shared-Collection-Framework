@@ -1,25 +1,24 @@
 package se.lnu.application.dao;
 
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 import se.lnu.application.entity.CommonEntity;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.Table;
 import java.util.Collection;
 import java.util.List;
+
+import static javafx.scene.input.KeyCode.T;
 
 /**
  * Abstract class for working with database
  *
  * @param <E> Entity class
  */
-public class AbstractDAO<E extends CommonEntity> {
+public class AbstractDAO<E extends CommonEntity> extends HibernateDaoSupport {
 
-    Class<E> aClass;
-    @PersistenceContext
-    private EntityManager entityManager;
+    private Class<E> aClass;
 
     public AbstractDAO(Class<E> aClass) {
         this.aClass = aClass;
@@ -27,52 +26,54 @@ public class AbstractDAO<E extends CommonEntity> {
 
     @Transactional
     public List<E> getList() {
-        Query query = entityManager.createQuery("FROM " + getTableName());
-        List<?> list = query.getResultList();
-        return (List<E>) list;
+        List<E> list = (List<E>) getHibernateTemplate().find("FROM " + getTableName());
+        return list;
     }
 
     @Transactional
     public void mergeList(Collection<E> list) {
         for (E e : list) {
-            entityManager.merge(e);
+            getHibernateTemplate().merge(e);
         }
     }
 
     @Transactional
     public void saveList(Collection<E> list) {
         for (E e : list) {
-            entityManager.persist(e);
+            getHibernateTemplate().persist(e);
         }
     }
 
     @Transactional
     public E create(E entity) {
-        entityManager.persist(entity);
+        getHibernateTemplate().persist(entity);
         return entity;
     }
 
     @Transactional
     public E update(E entity) {
-        entityManager.merge(entity);
+        getHibernateTemplate().update(entity);
         return entity;
     }
 
     @Transactional
     public void delete(E entity) {
-        entityManager.remove(entity);
+        getHibernateTemplate().delete(entity);
     }
 
     @Transactional
     public E get(Long id) {
-        return entityManager.<E>find(aClass, id);
+        List<?> list = getHibernateTemplate().find("from " + getTableName() + " where id=?", id);
+        if (list.size() > 0) {
+            return (E) list.get(0);
+        }
+        return null;
     }
 
     private String getTableName() {
         Table annotation = aClass.getAnnotation(Table.class);
         if (annotation != null) {
-            String name = annotation.name();
-            return name;
+            return annotation.name();
         }
         throw new IllegalArgumentException("Entity class should have Table annotation with name attribute. Class name: " + aClass.getSimpleName());
     }
