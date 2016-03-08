@@ -11,11 +11,23 @@ import se.lnu.application.entity.ArtifactEntity;
 public class ArtifactConverter implements Converter<ArtifactEntity, ArtifactDTO> {
     @Override
     public ArtifactEntity convertToEntity(ArtifactDTO dto) {
-        return null; // TODO
+        ArtifactEntity artifactEntity = new ArtifactEntity();
+        artifactEntity.setId(dto.getId());
+        artifactEntity.setName(dto.getName());
+        artifactEntity.setFileName(dto.getFileName());
+        artifactEntity.setContentType(dto.getContentType());
+        artifactEntity.setFile(dto.getFileBytes());
+        return artifactEntity;
     }
 
     @Override
     public ArtifactDTO convertToDTO(ArtifactEntity entity) {
-        return null; // TODO
+        ArtifactDTO artifactDTO = new ArtifactDTO();
+        artifactDTO.setId(entity.getId());
+        artifactDTO.setName(entity.getName());
+        artifactDTO.setFileName(entity.getFileName());
+        artifactDTO.setContentType(entity.getContentType());
+        artifactDTO.setFileBytes(entity.getFile());
+        return artifactDTO;
     }
 }
