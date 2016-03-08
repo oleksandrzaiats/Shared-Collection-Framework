@@ -3,18 +3,18 @@ package se.lnu.application.dto;
 import java.util.List;
 
 public class CollectionDTO implements CommonDTO {
-    long id;
-    String name;
-    String key;
+    private Long id;
+    private String name;
+    private String key;
 
-    List<CollectionDTO> collectionList;
-    List<ArtifactDTO> artifactList;
+    private List<CollectionDTO> collectionList;
+    private List<ArtifactDTO> artifactList;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
