@@ -4,12 +4,9 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 import se.lnu.application.entity.CommonEntity;
 
-import javax.persistence.EntityManager;
 import javax.persistence.Table;
 import java.util.Collection;
 import java.util.List;
-
-import static javafx.scene.input.KeyCode.T;
 
 /**
  * Abstract class for working with database
