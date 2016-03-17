@@ -95,16 +95,6 @@ public class SpringRootConfig {
     }
 
     @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("*").allowedMethods("POST, GET, OPTIONS, DELETE, PUT");
-            }
-        };
-    }
-
-    @Bean
     public CollectionDAO collectionDAO() {
         CollectionDAO collectionDAO = new CollectionDAO();
         collectionDAO.setSessionFactory(sessionFactory().getObject());
