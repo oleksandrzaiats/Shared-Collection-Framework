@@ -21,7 +21,7 @@ public class CollectionEntity implements CommonEntity {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "key")
+    @Column(name = "shared_key")
     private String key;
 
     @OneToMany(fetch = FetchType.EAGER)

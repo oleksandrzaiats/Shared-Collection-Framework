@@ -56,7 +56,8 @@ dependencies {
 
     compile("org.hibernate:hibernate-core:" + hibernateVersion)
     compile("org.hibernate:hibernate-entitymanager:" + hibernateVersion)
-    compile("org.postgresql:postgresql:9.4-1206-jdbc42")
+
+    compile("mysql:mysql-connector-java:5.1.38")
 
     jettyRun "org.eclipse.jetty:jetty-runner:" + jettyVersion
 
