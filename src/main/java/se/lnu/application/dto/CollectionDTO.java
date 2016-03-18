@@ -1,9 +1,13 @@
 package se.lnu.application.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 public class CollectionDTO implements CommonDTO {
     private Long id;
+    @NotNull
+    @Size(min = 3, max = 255)
     private String name;
     private String key;
 
