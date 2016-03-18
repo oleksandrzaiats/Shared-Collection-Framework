@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import se.lnu.application.dto.CollectionDTO;
 import se.lnu.application.processor.CollectionProcessor;
 
+import javax.annotation.security.RolesAllowed;
+
 /**
  * Controller with CRUD operations.
  * Controller contains only request/response logic of API.
@@ -26,6 +28,7 @@ public class CollectionController {
         return new ResponseEntity<>(collectionProcessor.getAll(), HttpStatus.OK);
     }
 
+    @RolesAllowed({ "USER" })
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
     public
     @ResponseBody

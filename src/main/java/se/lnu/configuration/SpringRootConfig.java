@@ -1,20 +1,28 @@
 package se.lnu.configuration;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.*;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import se.lnu.application.dao.ArtifactDAO;
 import se.lnu.application.dao.CollectionDAO;
+import se.lnu.application.dao.UserDAO;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.filter.CharacterEncodingFilter;
+import se.lnu.application.processor.UserProcessor;
+
+import javax.servlet.Filter;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -24,6 +32,7 @@ import java.util.Properties;
 @EnableAutoConfiguration
 @PropertySource(value = "classpath:application.properties")
 @ComponentScan({"se.lnu"})
+@Order(1)
 public class SpringRootConfig {
 
     @Autowired
@@ -102,9 +111,25 @@ public class SpringRootConfig {
     }
 
     @Bean
+    public UserDAO userDAO() {
+        UserDAO userDAO = new UserDAO();
+        userDAO.setSessionFactory(sessionFactory().getObject());
+        return userDAO;
+    }
+
+    @Bean
     public ArtifactDAO artifactDAO() {
         ArtifactDAO artifactDAO = new ArtifactDAO();
         artifactDAO.setSessionFactory(sessionFactory().getObject());
         return artifactDAO;
     }
+
+    @Bean
+    public Filter characterEncodingFilter() {
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setForceEncoding(true);
+        return characterEncodingFilter;
+    }
+
 }
