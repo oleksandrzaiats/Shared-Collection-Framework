@@ -6,6 +6,8 @@ import se.lnu.application.converter.CollectionConverter;
 import se.lnu.application.dao.CollectionDAO;
 import se.lnu.application.dto.CollectionDTO;
 import se.lnu.application.entity.CollectionEntity;
+import se.lnu.application.exception.ErrorCode;
+import se.lnu.application.exception.RecordNotFoundException;
 
 import java.util.List;
 
@@ -27,7 +29,11 @@ public class CollectionProcessor implements Processor<CollectionDTO> {
 
     @Override
     public CollectionDTO get(Long id) {
-        return collectionConverter.convertToDTO(collectionDAO.get(id));
+        CollectionEntity collectionEntity = collectionDAO.get(id);
+        if(collectionEntity == null) {
+            throw new RecordNotFoundException(ErrorCode.COLLECTION_NOT_FOUND);
+        }
+        return collectionConverter.convertToDTO(collectionEntity);
     }
 
     @Override
@@ -49,6 +55,9 @@ public class CollectionProcessor implements Processor<CollectionDTO> {
     public void delete(Long id) {
         // TODO add deleting logic
         CollectionEntity collectionEntity = collectionDAO.get(id);
+        if(collectionEntity == null) {
+            throw new RecordNotFoundException(ErrorCode.COLLECTION_NOT_FOUND);
+        }
         collectionDAO.delete(collectionEntity);
     }
 }

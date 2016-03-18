@@ -19,7 +19,7 @@ import java.io.OutputStream;
  */
 @RestController
 @RequestMapping("/artifact")
-public class ArtifactController {
+public class ArtifactController extends AbstractController {
 
     @Autowired
     ArtifactProcessor artifactProcessor;

@@ -16,7 +16,7 @@ import javax.annotation.security.RolesAllowed;
  */
 @RestController
 @RequestMapping("/collection")
-public class CollectionController {
+public class CollectionController extends AbstractController {
 
     @Autowired
     CollectionProcessor collectionProcessor;
@@ -40,6 +40,7 @@ public class CollectionController {
     public
     @ResponseBody
     ResponseEntity<?> create(@RequestBody CollectionDTO collectionDTO) {
+        validateBean(collectionDTO);
         return new ResponseEntity<>(collectionProcessor.create(collectionDTO), HttpStatus.OK);
     }
 
