@@ -6,6 +6,8 @@ import se.lnu.application.converter.ArtifactConverter;
 import se.lnu.application.dao.ArtifactDAO;
 import se.lnu.application.dto.ArtifactDTO;
 import se.lnu.application.entity.ArtifactEntity;
+import se.lnu.application.exception.ErrorCode;
+import se.lnu.application.exception.RecordNotFoundException;
 
 import java.util.List;
 
@@ -30,6 +32,9 @@ public class ArtifactProcessor implements Processor<ArtifactDTO> {
     @Override
     public ArtifactDTO get(Long id) {
         ArtifactEntity artifactEntity = artifactDAO.get(id);
+        if(artifactEntity == null) {
+            throw new RecordNotFoundException(ErrorCode.ARTIFACT_NOT_FOUND);
+        }
         return artifactConverter.convertToDTO(artifactEntity);
     }
 
@@ -48,6 +53,9 @@ public class ArtifactProcessor implements Processor<ArtifactDTO> {
     @Override
     public void delete(Long id) {
         ArtifactEntity artifactEntity = artifactDAO.get(id);
+        if(artifactEntity == null) {
+            throw new RecordNotFoundException(ErrorCode.ARTIFACT_NOT_FOUND);
+        }
         artifactDAO.delete(artifactEntity);
     }
 }
