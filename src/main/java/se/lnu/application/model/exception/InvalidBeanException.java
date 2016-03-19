@@ -1,4 +1,4 @@
-package se.lnu.application.exception;
+package se.lnu.application.model.exception;
 
 public class InvalidBeanException extends RuntimeException {
     public InvalidBeanException() {

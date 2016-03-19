@@ -2,7 +2,7 @@ package se.lnu.application.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import se.lnu.application.exception.ErrorCode;
+import se.lnu.application.model.exception.ErrorCode;
 
 import javax.validation.ConstraintViolation;
 

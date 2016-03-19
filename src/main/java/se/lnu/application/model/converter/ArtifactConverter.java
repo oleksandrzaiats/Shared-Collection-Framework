@@ -1,8 +1,8 @@
-package se.lnu.application.converter;
+package se.lnu.application.model.converter;
 
 import org.springframework.stereotype.Component;
-import se.lnu.application.dto.ArtifactDTO;
-import se.lnu.application.entity.ArtifactEntity;
+import se.lnu.application.model.dto.ArtifactDTO;
+import se.lnu.application.model.entity.ArtifactEntity;
 
 /**
  * Converter for @{@link ArtifactEntity} and @{@link ArtifactDTO}

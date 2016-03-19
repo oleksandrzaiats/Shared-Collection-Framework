@@ -1,6 +1,6 @@
 package se.lnu.application.security;
 
-import se.lnu.application.dto.UserDTO;
+import se.lnu.application.model.dto.UserDTO;
 
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -20,6 +20,10 @@ public class AuthUser {
         for (UserRole role : roles) {
             grantRole(role);
         }
+    }
+
+    public Long getId() {
+        return user.getId();
     }
 
     public void grantRole(UserRole role) {
@@ -57,5 +61,9 @@ public class AuthUser {
 
     public String getLogin() {
         return user.getLogin();
+    }
+
+    public UserDTO getUser() {
+        return user;
     }
 }

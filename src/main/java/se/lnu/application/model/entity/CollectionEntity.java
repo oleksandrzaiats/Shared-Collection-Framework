@@ -1,4 +1,4 @@
-package se.lnu.application.entity;
+package se.lnu.application.model.entity;
 
 
 import org.hibernate.annotations.GenericGenerator;
@@ -29,6 +29,9 @@ public class CollectionEntity implements CommonEntity {
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<CollectionEntity> collectionList;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private UserEntity user;
 
     public Long getId() {
         return id;
@@ -68,5 +71,13 @@ public class CollectionEntity implements CommonEntity {
 
     public void setCollectionList(List<CollectionEntity> collectionList) {
         this.collectionList = collectionList;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 }

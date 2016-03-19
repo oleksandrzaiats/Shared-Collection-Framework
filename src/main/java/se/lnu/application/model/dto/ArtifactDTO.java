@@ -1,4 +1,4 @@
-package se.lnu.application.dto;
+package se.lnu.application.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

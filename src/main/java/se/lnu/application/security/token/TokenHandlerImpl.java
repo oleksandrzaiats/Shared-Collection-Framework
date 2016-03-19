@@ -8,7 +8,7 @@ import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.lnu.application.dto.UserDTO;
+import se.lnu.application.model.dto.UserDTO;
 import se.lnu.application.processor.UserProcessor;
 
 @Component

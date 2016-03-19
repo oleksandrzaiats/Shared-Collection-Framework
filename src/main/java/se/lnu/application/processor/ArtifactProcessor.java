@@ -2,13 +2,15 @@ package se.lnu.application.processor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.lnu.application.converter.ArtifactConverter;
-import se.lnu.application.dao.ArtifactDAO;
-import se.lnu.application.dto.ArtifactDTO;
-import se.lnu.application.entity.ArtifactEntity;
-import se.lnu.application.exception.ErrorCode;
-import se.lnu.application.exception.RecordNotFoundException;
+import se.lnu.application.model.converter.ArtifactConverter;
+import se.lnu.application.model.dao.ArtifactDAO;
+import se.lnu.application.model.dto.ArtifactDTO;
+import se.lnu.application.model.entity.ArtifactEntity;
+import se.lnu.application.model.exception.ErrorCode;
+import se.lnu.application.model.exception.RecordNotFoundException;
+import se.lnu.application.security.AuthUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,8 +26,8 @@ public class ArtifactProcessor implements Processor<ArtifactDTO> {
     ArtifactConverter artifactConverter;
 
     @Override
-    public List<ArtifactDTO> getAll() {
-        List<ArtifactEntity> artifactEntityList = artifactDAO.getList();
+    public List<ArtifactDTO> getAll(AuthUser user) {
+        List<ArtifactEntity> artifactEntityList = artifactDAO.getList(new ArrayList<>());
         return artifactConverter.convertToDTOList(artifactEntityList);
     }
 

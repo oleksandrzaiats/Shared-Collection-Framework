@@ -1,7 +1,7 @@
-package se.lnu.application.dao;
+package se.lnu.application.model.dao;
 
 import org.springframework.stereotype.Repository;
-import se.lnu.application.entity.ArtifactEntity;
+import se.lnu.application.model.entity.ArtifactEntity;
 
 @Repository
 public class ArtifactDAO extends AbstractDAO<ArtifactEntity> {

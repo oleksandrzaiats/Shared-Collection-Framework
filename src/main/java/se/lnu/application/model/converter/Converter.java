@@ -1,7 +1,7 @@
-package se.lnu.application.converter;
+package se.lnu.application.model.converter;
 
-import se.lnu.application.dto.CommonDTO;
-import se.lnu.application.entity.CommonEntity;
+import se.lnu.application.model.dto.CommonDTO;
+import se.lnu.application.model.entity.CommonEntity;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -11,9 +11,9 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import se.lnu.application.dao.ArtifactDAO;
-import se.lnu.application.dao.CollectionDAO;
-import se.lnu.application.dao.UserDAO;
+import se.lnu.application.model.dao.ArtifactDAO;
+import se.lnu.application.model.dao.CollectionDAO;
+import se.lnu.application.model.dao.UserDAO;
 
 import javax.sql.DataSource;
 import java.util.Properties;

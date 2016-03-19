@@ -2,10 +2,10 @@ package se.lnu.application.utils;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import se.lnu.application.dto.ErrorDTO;
-import se.lnu.application.exception.ErrorCode;
-import se.lnu.application.exception.InvalidBeanException;
-import se.lnu.application.exception.RecordNotFoundException;
+import se.lnu.application.model.dto.ErrorDTO;
+import se.lnu.application.model.exception.ErrorCode;
+import se.lnu.application.model.exception.InvalidBeanException;
+import se.lnu.application.model.exception.RecordNotFoundException;
 
 /**
  * Creating response based on caught exception.

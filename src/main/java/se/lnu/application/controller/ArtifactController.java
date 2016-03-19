@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import se.lnu.application.dto.ArtifactDTO;
+import se.lnu.application.model.dto.ArtifactDTO;
 import se.lnu.application.processor.ArtifactProcessor;
 
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +28,7 @@ public class ArtifactController extends AbstractController {
     public
     @ResponseBody
     ResponseEntity<?> getAll() {
-        return new ResponseEntity<>(artifactProcessor.getAll(), HttpStatus.OK);
+        return new ResponseEntity<>(artifactProcessor.getAll(getCurrentUser()), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
