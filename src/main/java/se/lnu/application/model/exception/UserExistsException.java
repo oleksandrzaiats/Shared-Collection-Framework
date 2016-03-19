@@ -1,7 +1,8 @@
 package se.lnu.application.model.exception;
 
 public class UserExistsException extends RuntimeException {
-    ErrorCode errorCode;
+
+    private ErrorCode errorCode;
 
     public UserExistsException(String message) {
         super(message);
