@@ -1,7 +1,7 @@
 package se.lnu.application.security.token;
 
 import org.springframework.security.core.Authentication;
-import se.lnu.application.dto.UserDTO;
+import se.lnu.application.model.dto.UserDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

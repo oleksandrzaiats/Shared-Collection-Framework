@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import se.lnu.application.dto.CollectionDTO;
+import se.lnu.application.model.dto.CollectionDTO;
 import se.lnu.application.processor.CollectionProcessor;
+
+import java.util.Optional;
 
 /**
  * Controller with CRUD operations.
@@ -22,8 +24,16 @@ public class CollectionController extends AbstractController {
     @RequestMapping(method = RequestMethod.GET, path = "/")
     public
     @ResponseBody
-    ResponseEntity<?> getAll() {
-        return new ResponseEntity<>(collectionProcessor.getAll(), HttpStatus.OK);
+    ResponseEntity<?> getCollections(@RequestParam(value = "shared_key") Optional<String> sharedKey) {
+        if(sharedKey.isPresent()) {
+            return getSharedCollection(sharedKey.get());
+        } else {
+            return new ResponseEntity<>(collectionProcessor.getAll(getCurrentUser()), HttpStatus.OK);
+        }
+    }
+
+    private ResponseEntity<?> getSharedCollection(String sharedKey) {
+        return new ResponseEntity<>(collectionProcessor.getBySharedKey(sharedKey), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
@@ -37,6 +47,7 @@ public class CollectionController extends AbstractController {
     public
     @ResponseBody
     ResponseEntity<?> create(@RequestBody CollectionDTO collectionDTO) {
+        collectionDTO.setUser(getCurrentUser().getUser());
         validateBean(collectionDTO);
         return new ResponseEntity<>(collectionProcessor.create(collectionDTO), HttpStatus.OK);
     }

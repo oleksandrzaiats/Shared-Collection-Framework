@@ -2,11 +2,13 @@ package se.lnu.application.processor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.lnu.application.converter.UserConverter;
-import se.lnu.application.dao.UserDAO;
-import se.lnu.application.dto.UserDTO;
-import se.lnu.application.entity.UserEntity;
+import se.lnu.application.model.converter.UserConverter;
+import se.lnu.application.model.dao.UserDAO;
+import se.lnu.application.model.dto.UserDTO;
+import se.lnu.application.model.entity.UserEntity;
+import se.lnu.application.security.AuthUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,8 +24,8 @@ public class UserProcessor implements Processor<UserDTO> {
     UserConverter userConverter;
 
     @Override
-    public List<UserDTO> getAll() {
-        return userConverter.convertToDTOList(userDAO.getList());
+    public List<UserDTO> getAll(AuthUser user) {
+        return userConverter.convertToDTOList(userDAO.getList(new ArrayList<>()));
     }
 
     @Override

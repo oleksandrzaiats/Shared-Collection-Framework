@@ -1,6 +1,6 @@
-package se.lnu.application.exception;
+package se.lnu.application.model.exception;
 
-import se.lnu.application.dto.ErrorDTO;
+import se.lnu.application.model.dto.ErrorDTO;
 
 public enum ErrorCode {
     VALIDATION_ERROR(1, ""),

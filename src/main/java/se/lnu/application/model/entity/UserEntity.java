@@ -1,18 +1,25 @@
-package se.lnu.application.dto;
+package se.lnu.application.model.entity;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.*;
 
-public class UserDTO implements CommonDTO {
+@Entity(name = "user")
+@Table(name = "user")
+public class UserEntity implements CommonEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotNull
-    @Size(min = 3, max = 255)
+
+    @Column(name = "login")
     private String login;
+
+    @Column(name = "name")
     private String name;
-    @NotNull
-    @Size(min = 3, max = 255)
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "role")
     private String role;
 
     public Long getId() {
@@ -27,31 +34,32 @@ public class UserDTO implements CommonDTO {
         return login;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {
+        return role;
     }
 
     public void setRole(String role) {
         this.role = role;
     }
+
 }

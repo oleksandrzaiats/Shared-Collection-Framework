@@ -3,7 +3,7 @@ package se.lnu.application.security.token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import se.lnu.application.dto.UserDTO;
+import se.lnu.application.model.dto.UserDTO;
 import se.lnu.application.security.AuthUser;
 import se.lnu.application.security.UserAuthentication;
 

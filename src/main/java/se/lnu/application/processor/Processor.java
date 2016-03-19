@@ -1,6 +1,7 @@
 package se.lnu.application.processor;
 
-import se.lnu.application.dto.CommonDTO;
+import se.lnu.application.model.dto.CommonDTO;
+import se.lnu.application.security.AuthUser;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @param <D> Data transfer object class
  */
 public interface Processor<D extends CommonDTO> {
-    List<D> getAll();
+    List<D> getAll(AuthUser user);
 
     D get(Long id);
 

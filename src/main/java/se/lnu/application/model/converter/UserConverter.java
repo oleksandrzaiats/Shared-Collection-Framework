@@ -1,8 +1,8 @@
-package se.lnu.application.converter;
+package se.lnu.application.model.converter;
 
 import org.springframework.stereotype.Component;
-import se.lnu.application.dto.UserDTO;
-import se.lnu.application.entity.UserEntity;
+import se.lnu.application.model.dto.UserDTO;
+import se.lnu.application.model.entity.UserEntity;
 
 @Component
 public class UserConverter implements Converter<UserEntity, UserDTO> {

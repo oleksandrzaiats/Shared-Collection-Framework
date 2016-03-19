@@ -1,10 +1,12 @@
 package se.lnu.application.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import se.lnu.application.dto.ErrorDTO;
-import se.lnu.application.exception.InvalidBeanException;
+import se.lnu.application.model.dto.ErrorDTO;
+import se.lnu.application.model.exception.InvalidBeanException;
+import se.lnu.application.security.AuthUser;
 import se.lnu.application.utils.ExceptionHelper;
 import se.lnu.application.utils.StringUtils;
 
@@ -33,6 +35,7 @@ public abstract class AbstractController {
     /**
      * Handle all exceptions and create response based
      * on exception type.
+     *
      * @param e handled exception
      * @return response with error
      */
@@ -43,17 +46,22 @@ public abstract class AbstractController {
 
     /**
      * Generic method for bean validation.
+     *
      * @param bean bean to validate
-     * @param <T> type of bean
+     * @param <T>  type of bean
      * @throws InvalidBeanException if bean is not valid
      */
     protected <T> void validateBean(T bean) {
         Set<ConstraintViolation<T>> violationSet = validator.validate(bean);
         Iterator<ConstraintViolation<T>> iterator = violationSet.iterator();
-        if(iterator.hasNext()) {
+        if (iterator.hasNext()) {
             ConstraintViolation<T> next = iterator.next();
             throw new InvalidBeanException(StringUtils.formatValidationError(next));
         }
 
+    }
+
+    protected AuthUser getCurrentUser() {
+        return (AuthUser) SecurityContextHolder.getContext().getAuthentication().getDetails();
     }
 }

@@ -1,8 +1,8 @@
-package se.lnu.application.dao;
+package se.lnu.application.model.dao;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import se.lnu.application.entity.UserEntity;
+import se.lnu.application.model.entity.UserEntity;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package se.lnu.application.dto;
+package se.lnu.application.model.dto;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -10,6 +10,7 @@ public class CollectionDTO implements CommonDTO {
     @Size(min = 3, max = 255)
     private String name;
     private String key;
+    private UserDTO user;
 
     private List<CollectionDTO> collectionList;
     private List<ArtifactDTO> artifactList;
@@ -52,5 +53,13 @@ public class CollectionDTO implements CommonDTO {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 }
