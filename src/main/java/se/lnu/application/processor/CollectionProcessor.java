@@ -9,9 +9,10 @@ import se.lnu.application.model.entity.CollectionEntity;
 import se.lnu.application.model.exception.ErrorCode;
 import se.lnu.application.model.exception.RecordNotFoundException;
 import se.lnu.application.security.AuthUser;
+import se.lnu.application.security.UserRole;
 import se.lnu.application.utils.Filtering;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,8 +28,12 @@ public class CollectionProcessor implements Processor<CollectionDTO> {
 
     @Override
     public List<CollectionDTO> getAll(AuthUser user) {
-        Filtering userFilter = new Filtering("user_id", "=", user.getId().toString());
-        return collectionConverter.convertToDTOList(collectionDAO.getList(Arrays.asList(userFilter)));
+        List<Filtering> filteringList = new ArrayList<>();
+        if(!user.getRoles().contains(UserRole.ROLE_ADMIN)) {
+            Filtering userFilter = new Filtering("user_id", "=", user.getId().toString());
+            filteringList.add(userFilter);
+        }
+        return collectionConverter.convertToDTOList(collectionDAO.getList(filteringList));
     }
 
     @Override
