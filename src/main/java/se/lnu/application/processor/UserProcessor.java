@@ -9,6 +9,9 @@ import se.lnu.application.entity.UserEntity;
 
 import java.util.List;
 
+/**
+ * Contains all "business logic" for Users and managing database.
+ */
 @Component
 public class UserProcessor implements Processor<UserDTO> {
 
@@ -48,7 +51,8 @@ public class UserProcessor implements Processor<UserDTO> {
         userDAO.delete(userEntity);
     }
 
-    public UserDTO findUserByLogin(String login) {
+
+public UserDTO findUserByLogin(String login) {
         UserEntity userEntity = userDAO.findUserByLogin(login);
         if (userEntity != null) {
             return userConverter.convertToDTO(userEntity);

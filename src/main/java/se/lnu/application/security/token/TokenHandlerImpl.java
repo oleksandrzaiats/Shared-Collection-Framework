@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 import se.lnu.application.dto.UserDTO;
 import se.lnu.application.processor.UserProcessor;
 
+/**
+ * Contains methods for parsing and creating tokens
+ */
 @Component
 public class TokenHandlerImpl implements TokenHandler {
 

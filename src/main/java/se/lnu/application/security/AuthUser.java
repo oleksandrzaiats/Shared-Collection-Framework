@@ -6,6 +6,9 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Represents an authenticated user
+ */
 public class AuthUser {
 
     private UserDTO user;

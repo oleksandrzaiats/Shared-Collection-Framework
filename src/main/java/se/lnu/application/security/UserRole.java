@@ -1,5 +1,8 @@
 package se.lnu.application.security;
 
+/**
+ * Getting user role
+ */
 public enum UserRole {
     ROLE_USER, ROLE_ADMIN;
 

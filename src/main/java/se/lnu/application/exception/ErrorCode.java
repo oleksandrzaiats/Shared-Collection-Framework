@@ -5,8 +5,10 @@ import se.lnu.application.dto.ErrorDTO;
 public enum ErrorCode {
     VALIDATION_ERROR(1, ""),
     INTERNAL_ERROR(2, "Internal server error"),
-    ARTIFACT_NOT_FOUND(3, "Artifact does not exists"),
-    COLLECTION_NOT_FOUND(4, "Collection does not exists"),
+    ARTIFACT_NOT_FOUND(3, "Artifact does not exist"),
+    COLLECTION_NOT_FOUND(4, "Collection does not exist"),
+    USER_NOT_FOUND(5, "User does not exist"),
+    USER_EXISTS(6, "User exists"),
     ;
 
     ErrorDTO apiError;
