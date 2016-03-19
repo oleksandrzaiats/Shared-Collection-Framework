@@ -1,7 +1,6 @@
 package se.lnu.application.processor;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Component;
 import se.lnu.application.converter.UserConverter;
 import se.lnu.application.dao.UserDAO;
@@ -10,9 +9,6 @@ import se.lnu.application.entity.UserEntity;
 
 import java.util.List;
 
-/**
- * Created by olefir on 2016-03-17.
- */
 @Component
 public class UserProcessor implements Processor<UserDTO> {
 
@@ -41,7 +37,6 @@ public class UserProcessor implements Processor<UserDTO> {
 
     @Override
     public UserDTO update(UserDTO dto) {
-        // TODO add artifact removing logic
         UserEntity userEntity = userConverter.convertToEntity(dto);
         userEntity = userDAO.update(userEntity);
         return userConverter.convertToDTO(userEntity);
@@ -49,7 +44,6 @@ public class UserProcessor implements Processor<UserDTO> {
 
     @Override
     public void delete(Long id) {
-        // TODO add deleting logic
         UserEntity userEntity = userDAO.get(id);
         userDAO.delete(userEntity);
     }

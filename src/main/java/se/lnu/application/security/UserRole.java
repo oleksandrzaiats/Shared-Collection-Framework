@@ -1,22 +1,20 @@
 package se.lnu.application.security;
 
 public enum UserRole {
-    USER, ADMIN;
+    ROLE_USER, ROLE_ADMIN;
 
     public UserAuthority asAuthorityFor(final AuthUser user) {
         final UserAuthority authority = new UserAuthority();
-        authority.setAuthority("ROLE_" + toString());
+        authority.setAuthority(toString());
         authority.setUser(user);
         return authority;
     }
 
     public static UserRole valueOf(final UserAuthority authority) {
-        switch (authority.getAuthority()) {
-            case "USER":
-                return USER;
-            case "ADMIN":
-                return ADMIN;
+        try {
+            return UserRole.valueOf(authority.getAuthority());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("No role defined for authority: " + authority.getAuthority());
         }
-        throw new IllegalArgumentException("No role defined for authority: " + authority.getAuthority());
     }
 }

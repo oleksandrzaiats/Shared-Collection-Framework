@@ -67,7 +67,7 @@ public class AbstractDAO<E extends CommonEntity> extends HibernateDaoSupport {
         return null;
     }
 
-    private String getTableName() {
+    protected String getTableName() {
         Table annotation = aClass.getAnnotation(Table.class);
         if (annotation != null) {
             return annotation.name();

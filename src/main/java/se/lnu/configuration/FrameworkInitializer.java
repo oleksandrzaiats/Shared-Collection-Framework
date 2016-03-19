@@ -11,7 +11,7 @@ public class FrameworkInitializer extends
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class[] { SpringRootConfig.class, TokenAuthenticationSecurityConfig.class };
+		return new Class[] { SpringRootConfig.class, SpringSecurityConfig.class };
 	}
 
 	@Override

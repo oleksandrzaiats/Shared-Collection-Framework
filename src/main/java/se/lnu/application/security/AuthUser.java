@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.lnu.application.security;
 
 import se.lnu.application.dto.UserDTO;
@@ -11,10 +6,6 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- *
- * @author olefir
- */
 public class AuthUser {
 
     private UserDTO user;
@@ -42,7 +33,7 @@ public class AuthUser {
         if (authorities == null) {
             authorities = new HashSet<>();
         }
-        authorities.add(UserRole.USER.asAuthorityFor(this));
+        authorities.add(UserRole.ROLE_USER.asAuthorityFor(this));
         return authorities;
     }
 
@@ -59,10 +50,6 @@ public class AuthUser {
         }
         return roles;
     }
-
-    /*public String getUserEmail() {
-        return user.getUserEmail();
-    } */
 
     public String getPassword() {
         return user.getPassword();

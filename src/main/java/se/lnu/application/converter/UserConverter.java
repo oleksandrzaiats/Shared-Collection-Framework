@@ -1,17 +1,8 @@
 package se.lnu.application.converter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import se.lnu.application.dto.CollectionDTO;
 import se.lnu.application.dto.UserDTO;
-import se.lnu.application.entity.CollectionEntity;
 import se.lnu.application.entity.UserEntity;
-
-import java.util.List;
-
-/**
- * Created by olefir on 2016-03-17.
- */
 
 @Component
 public class UserConverter implements Converter<UserEntity, UserDTO> {
@@ -24,7 +15,6 @@ public class UserConverter implements Converter<UserEntity, UserDTO> {
         userEntity.setName(dto.getName());
         userEntity.setPassword(dto.getPassword());
         userEntity.setRole(dto.getRole());
-
         return userEntity;
     }
 
@@ -36,7 +26,6 @@ public class UserConverter implements Converter<UserEntity, UserDTO> {
         userDTO.setName(entity.getName());
         userDTO.setPassword(entity.getPassword());
         userDTO.setRole(entity.getRole());
-
         return userDTO;
     }
 

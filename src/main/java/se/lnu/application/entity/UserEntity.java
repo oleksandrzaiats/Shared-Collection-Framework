@@ -1,12 +1,7 @@
 package se.lnu.application.entity;
 
 import javax.persistence.*;
-import java.util.Arrays;
-import java.util.Objects;
 
-/**
- * Created by olefir on 2016-03-17.
- */
 @Entity(name = "user")
 @Table(name = "user")
 public class UserEntity implements CommonEntity {
@@ -39,24 +34,32 @@ public class UserEntity implements CommonEntity {
         return login;
     }
 
-    public void setLogin(String login) { this.login = login; }
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
     public String getName() {
         return name;
     }
 
-    public  void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) { this.password = password; }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getRole() {
         return role;
     }
 
-    public  void setRole(String role) {this.role = role; }
+    public void setRole(String role) {
+        this.role = role;
+    }
 
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.lnu.application.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +11,8 @@ import se.lnu.application.security.token.TokenAuthenticationService;
 
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author olefir
- */
 @RestController
-public class AuthenticationController {
+public class AuthenticationController extends AbstractController {
 
     @Autowired
     UserProcessor userProcessor;
@@ -31,19 +22,23 @@ public class AuthenticationController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public @ResponseBody
-    ResponseEntity<?>  createTokenForUser(@RequestParam("login") String login, @RequestParam("password") String password, HttpServletResponse response) {
+    ResponseEntity<?> login(@RequestParam("login") String login, @RequestParam("password") String password, HttpServletResponse response) {
+        // TODO change @RequestParam to @RequestBody UserDTO
+        // TODO validate DTO
         UserDTO authUser = userProcessor.findUserByLogin(login);
-
         if (authUser != null & authUser.getPassword().equals(password)) {
             return new ResponseEntity<>(tokenAuthenticationService.addAuthentication(response, authUser), HttpStatus.OK);
         } else {
+            // TODO throw RecordNotFoundException exception
             return new ResponseEntity<>("User isn't found", HttpStatus.BAD_REQUEST);
         }
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/", method = RequestMethod.POST)
     public @ResponseBody
-    ResponseEntity<?> createTokenForUser(@RequestParam("login") String login, @RequestParam("name") String name, @RequestParam("password") String password, HttpServletResponse response) {
+    ResponseEntity<?> create(@RequestParam("login") String login, @RequestParam("name") String name, @RequestParam("password") String password, HttpServletResponse response) {
+        // TODO change @RequestParam to @RequestBody UserDTO
+        // TODO validate DTO
         UserDTO authUser = userProcessor.findUserByLogin(login);
 
         if (authUser == null) {
@@ -51,16 +46,20 @@ public class AuthenticationController {
             userDTO.setLogin(login);
             userDTO.setName(name);
             userDTO.setPassword(password);
-            userDTO.setRole(UserRole.USER.toString());
+            // TODO role must be set if there is no ROLE in UserDTO in request
+            userDTO.setRole(UserRole.ROLE_USER.toString());
 
             userDTO = userProcessor.create(userDTO);
 
             if (userDTO != null) {
+                // TODO POST method must return entity which was created (return UserDTO)
                 return new ResponseEntity<>("User is created", HttpStatus.OK);
             } else {
+                // TODO remove
                 return new ResponseEntity<>("User isn't created", HttpStatus.BAD_REQUEST);
             }
         } else {
+            // TODO throw UserAlreadyExist exception
             return new ResponseEntity<>("User exits", HttpStatus.BAD_REQUEST);
         }
     }

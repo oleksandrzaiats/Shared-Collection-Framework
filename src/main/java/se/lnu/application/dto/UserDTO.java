@@ -1,10 +1,5 @@
 package se.lnu.application.dto;
 
-import javax.persistence.Column;
-
-/**
- * Created by olefir on 2016-03-17.
- */
 public class UserDTO implements CommonDTO {
 
     private Long id;
@@ -37,11 +32,19 @@ public class UserDTO implements CommonDTO {
         return role;
     }
 
-    public void setLogin(String login) { this.login = login; }
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
-    public  void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public void setPassword(String password) { this.password = password; }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-    public  void setRole(String role) {this.role = role; }
+    public void setRole(String role) {
+        this.role = role;
+    }
 }
