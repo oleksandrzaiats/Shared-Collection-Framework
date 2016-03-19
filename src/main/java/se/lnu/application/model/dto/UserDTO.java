@@ -34,7 +34,7 @@ public class UserDTO implements CommonDTO {
         return name;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     public String getPassword() {
         return password;
     }

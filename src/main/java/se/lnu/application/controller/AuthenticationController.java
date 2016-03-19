@@ -40,7 +40,7 @@ public class AuthenticationController extends AbstractController {
         }
     }
 
-    @RequestMapping(value = "/user/", method = RequestMethod.POST)
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
     public @ResponseBody
     ResponseEntity<?> create(@RequestBody UserDTO userDTO, HttpServletResponse response) {
         validateBean(userDTO);
