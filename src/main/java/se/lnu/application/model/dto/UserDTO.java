@@ -2,11 +2,18 @@ package se.lnu.application.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class UserDTO implements CommonDTO {
 
     private Long id;
+    @NotNull
+    @Size(min = 3, max = 255)
     private String login;
     private String name;
+    @NotNull
+    @Size(min = 3, max = 255)
     private String password;
     @JsonIgnore
     private String role;
@@ -27,7 +34,7 @@ public class UserDTO implements CommonDTO {
         return name;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     public String getPassword() {
         return password;
     }

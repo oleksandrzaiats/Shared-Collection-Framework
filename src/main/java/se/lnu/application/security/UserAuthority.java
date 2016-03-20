@@ -2,6 +2,9 @@ package se.lnu.application.security;
 
 import org.springframework.security.core.GrantedAuthority;
 
+/**
+ * Represents an authority granted to an Authentication object.
+ */
 public class UserAuthority implements GrantedAuthority {
 
     private AuthUser user;

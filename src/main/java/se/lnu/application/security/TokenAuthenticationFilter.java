@@ -14,6 +14,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * Performs filtering tasks on requests
+ */
 @Component
 public class TokenAuthenticationFilter extends GenericFilterBean {
 

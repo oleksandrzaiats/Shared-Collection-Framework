@@ -10,6 +10,9 @@ import se.lnu.application.security.UserAuthentication;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Contains methods for adding/reading a token to/from a header
+ */
 @Service
 public class TokenAuthenticationServiceImpl implements TokenAuthenticationService {
 
