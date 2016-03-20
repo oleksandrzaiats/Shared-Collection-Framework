@@ -1,6 +1,7 @@
 package se.lnu.application.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -34,7 +35,7 @@ public class UserDTO implements CommonDTO {
         return name;
     }
 
-    //@JsonIgnore
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -51,6 +52,7 @@ public class UserDTO implements CommonDTO {
         this.name = name;
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }

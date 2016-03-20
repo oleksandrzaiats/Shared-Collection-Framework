@@ -1,9 +1,9 @@
 package se.lnu.application.security;
 
-import java.util.Collection;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
 
 /**
  * Represents info for an authentication request and for an authenticated principal

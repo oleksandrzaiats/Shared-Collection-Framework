@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import se.lnu.application.model.dto.TokenDTO;
 import se.lnu.application.model.dto.UserDTO;
 import se.lnu.application.model.exception.ErrorCode;
 import se.lnu.application.model.exception.RecordNotFoundException;
@@ -34,7 +35,9 @@ public class AuthenticationController extends AbstractController {
         validateBean(userDTO);
         UserDTO authUser = userProcessor.findUserByLogin(userDTO.getLogin());
         if (authUser != null && authUser.getPassword().equals(userDTO.getPassword())) {
-            return new ResponseEntity<>(tokenAuthenticationService.addAuthentication(response, authUser), HttpStatus.OK);
+            TokenDTO tokenDTO = new TokenDTO();
+            tokenDTO.setToken(tokenAuthenticationService.addAuthentication(response, authUser));
+            return new ResponseEntity<>(tokenDTO, HttpStatus.OK);
         } else {
             throw new RecordNotFoundException(ErrorCode.USER_NOT_FOUND);
         }
