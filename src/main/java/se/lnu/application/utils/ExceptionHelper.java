@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import se.lnu.application.model.dto.ErrorDTO;
 import se.lnu.application.model.exception.ErrorCode;
 import se.lnu.application.model.exception.InvalidBeanException;
+import se.lnu.application.model.exception.NoPermissionException;
 import se.lnu.application.model.exception.RecordNotFoundException;
 
 /**
@@ -17,9 +18,13 @@ public class ExceptionHelper {
             errorDTO.setErrorCode(ErrorCode.VALIDATION_ERROR.getErrorCode());
             errorDTO.setMessage(e.getMessage());
             return new ResponseEntity<>(errorDTO, HttpStatus.BAD_REQUEST);
-        } if (e instanceof RecordNotFoundException) {
+        }
+        if (e instanceof RecordNotFoundException) {
             ErrorCode errorCode = ((RecordNotFoundException) e).getErrorCode();
             return new ResponseEntity<>(errorCode.getErrorDTO(), HttpStatus.NOT_FOUND);
+        }
+        if (e instanceof NoPermissionException) {
+            return new ResponseEntity<>(ErrorCode.NO_PERMISSION.getErrorDTO(), HttpStatus.FORBIDDEN);
         } else {
             errorDTO.setErrorCode(ErrorCode.INTERNAL_ERROR.getErrorCode());
             errorDTO.setMessage(ErrorCode.INTERNAL_ERROR.getMessage() + ": " + e.getMessage());

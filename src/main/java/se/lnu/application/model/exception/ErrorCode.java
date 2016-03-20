@@ -7,6 +7,7 @@ public enum ErrorCode {
     INTERNAL_ERROR(2, "Internal server error"),
     ARTIFACT_NOT_FOUND(3, "Artifact does not exists"),
     COLLECTION_NOT_FOUND(4, "Collection does not exists"),
+    NO_PERMISSION(5, "You don't have permission for editing or deleting this object"),
     ;
 
     ErrorDTO apiError;

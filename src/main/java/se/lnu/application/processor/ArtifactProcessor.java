@@ -34,7 +34,7 @@ public class ArtifactProcessor implements Processor<ArtifactDTO> {
     @Override
     public ArtifactDTO get(Long id) {
         ArtifactEntity artifactEntity = artifactDAO.get(id);
-        if(artifactEntity == null) {
+        if (artifactEntity == null) {
             throw new RecordNotFoundException(ErrorCode.ARTIFACT_NOT_FOUND);
         }
         return artifactConverter.convertToDTO(artifactEntity);
@@ -47,17 +47,19 @@ public class ArtifactProcessor implements Processor<ArtifactDTO> {
     }
 
     @Override
-    public ArtifactDTO update(ArtifactDTO dto) {
+    public ArtifactDTO update(ArtifactDTO dto, AuthUser user) {
+        checkPermission(dto.getUser().getId(), user.getId());
         ArtifactEntity artifactEntity = artifactDAO.update(artifactConverter.convertToEntity(dto));
         return artifactConverter.convertToDTO(artifactEntity);
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long id, AuthUser user) {
         ArtifactEntity artifactEntity = artifactDAO.get(id);
-        if(artifactEntity == null) {
+        if (artifactEntity == null) {
             throw new RecordNotFoundException(ErrorCode.ARTIFACT_NOT_FOUND);
         }
+        checkPermission(artifactEntity.getUser().getId(), user.getId());
         artifactDAO.delete(artifactEntity);
     }
 }

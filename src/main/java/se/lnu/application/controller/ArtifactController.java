@@ -57,6 +57,7 @@ public class ArtifactController extends AbstractController {
         artifactDTO.setFileBytes(file.getBytes());
         artifactDTO.setContentType(file.getContentType());
         artifactDTO.setFileName(file.getOriginalFilename());
+        artifactDTO.setUser(getCurrentUser().getUser());
         return new ResponseEntity<>(artifactProcessor.create(artifactDTO), HttpStatus.OK);
     }
 
@@ -64,14 +65,14 @@ public class ArtifactController extends AbstractController {
     public
     @ResponseBody
     ResponseEntity<?> update(@RequestBody ArtifactDTO artifactDTO) {
-        return new ResponseEntity<>(artifactProcessor.update(artifactDTO), HttpStatus.OK);
+        return new ResponseEntity<>(artifactProcessor.update(artifactDTO, getCurrentUser()), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/{id}")
     public
     @ResponseBody
     ResponseEntity<?> delete(@PathVariable Long id) {
-        artifactProcessor.delete(id);
+        artifactProcessor.delete(id, getCurrentUser());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

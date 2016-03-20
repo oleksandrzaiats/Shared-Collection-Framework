@@ -25,7 +25,7 @@ public class CollectionController extends AbstractController {
     public
     @ResponseBody
     ResponseEntity<?> getCollections(@RequestParam(value = "shared_key") Optional<String> sharedKey) {
-        if(sharedKey.isPresent()) {
+        if (sharedKey.isPresent()) {
             return getSharedCollection(sharedKey.get());
         } else {
             return new ResponseEntity<>(collectionProcessor.getAll(getCurrentUser()), HttpStatus.OK);
@@ -56,14 +56,14 @@ public class CollectionController extends AbstractController {
     public
     @ResponseBody
     ResponseEntity<?> update(@RequestBody CollectionDTO collectionDTO) {
-        return new ResponseEntity<>(collectionProcessor.update(collectionDTO), HttpStatus.OK);
+        return new ResponseEntity<>(collectionProcessor.update(collectionDTO, getCurrentUser()), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/{id}")
     public
     @ResponseBody
     ResponseEntity<?> delete(@PathVariable Long id) {
-        collectionProcessor.delete(id);
+        collectionProcessor.delete(id, getCurrentUser());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -22,6 +22,9 @@ public class ArtifactEntity implements CommonEntity {
     @Column(name = "file")
     private byte[] file;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private UserEntity user;
+
     public Long getId() {
         return id;
     }
@@ -60,5 +63,13 @@ public class ArtifactEntity implements CommonEntity {
 
     public void setContentType(String contentType) {
         this.contentType = contentType;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 }

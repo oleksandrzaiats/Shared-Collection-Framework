@@ -9,6 +9,7 @@ public class ArtifactDTO implements CommonDTO {
     private String contentType;
     @JsonIgnore
     private byte[] fileBytes;
+    private UserDTO user;
 
     public Long getId() {
         return id;
@@ -48,5 +49,13 @@ public class ArtifactDTO implements CommonDTO {
 
     public String getContentType() {
         return contentType;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
+    }
+
+    public UserDTO getUser() {
+        return user;
     }
 }

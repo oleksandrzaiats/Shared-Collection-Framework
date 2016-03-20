@@ -38,14 +38,14 @@ public class UserProcessor implements Processor<UserDTO> {
     }
 
     @Override
-    public UserDTO update(UserDTO dto) {
+    public UserDTO update(UserDTO dto, AuthUser user) {
         UserEntity userEntity = userConverter.convertToEntity(dto);
         userEntity = userDAO.update(userEntity);
         return userConverter.convertToDTO(userEntity);
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long id, AuthUser user) {
         UserEntity userEntity = userDAO.get(id);
         userDAO.delete(userEntity);
     }
