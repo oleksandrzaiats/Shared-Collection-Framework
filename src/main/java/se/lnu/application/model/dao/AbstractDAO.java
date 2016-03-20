@@ -16,10 +16,10 @@ import java.util.List;
  */
 public abstract class AbstractDAO<E extends CommonEntity> extends HibernateDaoSupport {
 
-    private Class<E> aClass;
+    private Class<E> entityClass;
 
     public AbstractDAO(Class<E> aClass) {
-        this.aClass = aClass;
+        this.entityClass = aClass;
     }
 
     @Transactional
@@ -69,12 +69,16 @@ public abstract class AbstractDAO<E extends CommonEntity> extends HibernateDaoSu
         return null;
     }
 
-    protected String getTableName() {
+    public String getTableName(Class<?> aClass) {
         Table annotation = aClass.getAnnotation(Table.class);
         if (annotation != null) {
             return annotation.name();
         }
         throw new IllegalArgumentException("Entity class should have Table annotation with name attribute. Class name: " + aClass.getSimpleName());
+    }
+
+    public String getTableName() {
+        return getTableName(entityClass);
     }
 
     protected StringBuilder getWhereFiltering(List<Filtering> filteringList) {

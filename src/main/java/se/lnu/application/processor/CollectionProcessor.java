@@ -54,7 +54,6 @@ public class CollectionProcessor implements Processor<CollectionDTO> {
 
     @Override
     public CollectionDTO update(CollectionDTO dto, AuthUser user) {
-        // TODO add artifact removing logic
         CollectionEntity collectionEntity = collectionConverter.convertToEntity(dto);
         checkPermission(collectionEntity.getUser().getId(), user.getId());
         collectionEntity = collectionDAO.update(collectionEntity);
@@ -63,13 +62,20 @@ public class CollectionProcessor implements Processor<CollectionDTO> {
 
     @Override
     public void delete(Long id, AuthUser user) {
-        // TODO add deleting logic
         CollectionEntity collectionEntity = collectionDAO.get(id);
         if (collectionEntity == null) {
             throw new RecordNotFoundException(ErrorCode.COLLECTION_NOT_FOUND);
         }
         checkPermission(collectionEntity.getUser().getId(), user.getId());
+        deleteCollection(collectionEntity);
         collectionDAO.delete(collectionEntity);
+    }
+
+    private void deleteCollection(CollectionEntity collectionEntity) {
+        for (CollectionEntity entity : collectionEntity.getCollectionList()) {
+            deleteCollection(entity);
+            collectionDAO.delete(collectionEntity);
+        }
     }
 
     public CollectionDTO getBySharedKey(String sharedKey) {
