@@ -1,4 +1,4 @@
-package se.lnu.application.model.entity;
+package se.lnu.application.entity;
 
 
 import org.hibernate.annotations.GenericGenerator;
@@ -24,10 +24,10 @@ public class CollectionEntity implements CommonEntity {
     @Column(name = "shared_key")
     private String key;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<ArtifactEntity> artifactList;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<CollectionEntity> collectionList;
 
     @ManyToOne(fetch = FetchType.EAGER)
