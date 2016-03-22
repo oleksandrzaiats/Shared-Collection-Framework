@@ -2,6 +2,7 @@ package se.lnu.configuration;
 
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+import se.lnu.configuration.filter.SimpleCORSFilter;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -31,7 +32,7 @@ public class FrameworkInitializer extends
 				.addFilter("springSecurityFilterChain",
 						new DelegatingFilterProxy("springSecurityFilterChain"))
 				.addMappingForUrlPatterns(null, false, "/*");
-
+		servletContext.addFilter("simpleCORSFilter", new SimpleCORSFilter()).addMappingForUrlPatterns(null, false, "/*");
 		super.onStartup(servletContext);
 	}
 
