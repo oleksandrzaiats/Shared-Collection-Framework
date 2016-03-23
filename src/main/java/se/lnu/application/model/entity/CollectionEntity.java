@@ -1,4 +1,4 @@
-package se.lnu.application.entity;
+package se.lnu.application.model.entity;
 
 
 import org.hibernate.annotations.GenericGenerator;
