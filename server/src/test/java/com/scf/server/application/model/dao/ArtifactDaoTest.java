@@ -3,7 +3,6 @@ package com.scf.server.application.model.dao;
 import com.scf.server.application.model.entity.ArtifactEntity;
 import com.scf.server.application.model.entity.UserEntity;
 import com.scf.server.application.utils.Filtering;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class ArtifactDaoTest extends BaseDaoTest<ArtifactEntity> {
     public void setUp() {
         userEntity = InitialValue.getUserEntity();
         userDAO.create(userEntity);
-        Assert.assertNotNull(userEntity.getId());
+        assertNotNull(userEntity.getId());
 
         entity = InitialValue.getArtifactEntity(userEntity);
     }
@@ -33,7 +32,7 @@ public class ArtifactDaoTest extends BaseDaoTest<ArtifactEntity> {
     public void testAdd() {
         this.baseCreate(entity);
 
-        Assert.assertNotNull(this.baseGet(entity.getId()));
+        assertNotNull(this.baseGet(entity.getId()));
     }
 
     @Test
@@ -46,9 +45,9 @@ public class ArtifactDaoTest extends BaseDaoTest<ArtifactEntity> {
 
         List<ArtifactEntity> list = this.baseGetList(filteringList);
 
-        Assert.assertFalse(list.isEmpty());
-        Assert.assertNotNull(list.get(0));
-        Assert.assertTrue(list.get(0).getName().equals("test"));
+        assertFalse(list.isEmpty());
+        assertNotNull(list.get(0));
+        assertTrue(list.get(0).getName().equals("test"));
     }
 
     @Test
@@ -56,7 +55,7 @@ public class ArtifactDaoTest extends BaseDaoTest<ArtifactEntity> {
         this.baseCreate(entity);
 
         List<ArtifactEntity> listOld = this.baseGetList(new ArrayList<>());
-        Assert.assertFalse(listOld.isEmpty());
+        assertFalse(listOld.isEmpty());
 
         entity.setName("new_test");
         List<ArtifactEntity> listAdd = new ArrayList<>();
@@ -65,9 +64,9 @@ public class ArtifactDaoTest extends BaseDaoTest<ArtifactEntity> {
 
         List<ArtifactEntity> listNew = this.baseGetList(new ArrayList<>());
 
-        Assert.assertFalse(listNew.isEmpty());
-        Assert.assertTrue(listNew.size() == listOld.size());
-        Assert.assertEquals(this.baseGet(entity.getId()).getName(), "new_test");
+        assertFalse(listNew.isEmpty());
+        assertTrue(listNew.size() == listOld.size());
+        assertEquals(this.baseGet(entity.getId()).getName(), "new_test");
     }
 
     @Test
@@ -75,7 +74,7 @@ public class ArtifactDaoTest extends BaseDaoTest<ArtifactEntity> {
         this.baseCreate(entity);
 
         List<ArtifactEntity> listOld = this.baseGetList(new ArrayList<>());
-        Assert.assertFalse(listOld.isEmpty());
+        assertFalse(listOld.isEmpty());
 
         ArtifactEntity newEntity = InitialValue.getArtifactEntity(userEntity);
         List<ArtifactEntity> listAdd = new ArrayList<>();
@@ -84,15 +83,15 @@ public class ArtifactDaoTest extends BaseDaoTest<ArtifactEntity> {
 
         List<ArtifactEntity> listNew = this.baseGetList(new ArrayList<>());
 
-        Assert.assertFalse(listNew.isEmpty());
-        Assert.assertTrue(listNew.size() > listOld.size());
-        Assert.assertTrue(listNew.size() - listOld.size() == 1);
+        assertFalse(listNew.isEmpty());
+        assertTrue(listNew.size() > listOld.size());
+        assertTrue(listNew.size() - listOld.size() == 1);
     }
 
     @Test
     public void testCreate() {
         this.baseCreate(entity);
-        Assert.assertNotNull(entity.getId());
+        assertNotNull(entity.getId());
     }
 
     @Test
@@ -102,8 +101,8 @@ public class ArtifactDaoTest extends BaseDaoTest<ArtifactEntity> {
         entity.setName("new_test");
         this.baseUpdate(entity);
 
-        Assert.assertNotNull(entity);
-        Assert.assertEquals(this.baseGet(entity.getId()).getName(), "new_test");
+        assertNotNull(entity);
+        assertEquals(this.baseGet(entity.getId()).getName(), "new_test");
     }
 
     @Test
@@ -111,7 +110,7 @@ public class ArtifactDaoTest extends BaseDaoTest<ArtifactEntity> {
         this.baseCreate(entity);
         this.baseDelete(entity);
 
-        Assert.assertNull(this.baseGet(entity.getId()));
+        assertNull(this.baseGet(entity.getId()));
     }
 
     @Test

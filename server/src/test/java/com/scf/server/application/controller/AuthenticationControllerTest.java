@@ -3,6 +3,7 @@ package com.scf.server.application.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scf.server.application.processor.UserProcessor;
 import com.scf.server.application.security.UserRole;
+import com.scf.server.application.utils.PasswordHelper;
 import com.scf.server.configuration.SpringRootConfig;
 import com.scf.shared.dto.UserDTO;
 import org.junit.After;
@@ -86,7 +87,7 @@ public class AuthenticationControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(this.objectMapper.writeValueAsString(userDTO)
-                )).andExpect(status().isOk());
+                        )).andExpect(status().isOk());
     }
 
     @Test
@@ -105,7 +106,7 @@ public class AuthenticationControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(this.objectMapper.writeValueAsString(userDTO)
-                )).andExpect(status().isOk());
+                        )).andExpect(status().isOk());
     }
 
     private UserDTO getUser() {

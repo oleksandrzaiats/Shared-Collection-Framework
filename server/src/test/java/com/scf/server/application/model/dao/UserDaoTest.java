@@ -1,7 +1,6 @@
 package com.scf.server.application.model.dao;
 
 import com.scf.server.application.model.entity.UserEntity;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,7 +20,7 @@ public class UserDaoTest extends BaseDaoTest<UserEntity> {
     public void testAdd() {
         this.baseCreate(entity);
 
-        Assert.assertNotNull(this.baseGet(entity.getId()));
+        assertNotNull(this.baseGet(entity.getId()));
     }
 
     @Test
@@ -30,9 +29,9 @@ public class UserDaoTest extends BaseDaoTest<UserEntity> {
 
         List<UserEntity> list = this.baseGetList(new ArrayList<>());
 
-        Assert.assertFalse(list.isEmpty());
-        Assert.assertNotNull(list.get(0));
-        Assert.assertTrue(list.get(0).getName().equals("test"));
+        assertFalse(list.isEmpty());
+        assertNotNull(list.get(0));
+        assertTrue(list.get(0).getName().equals("test"));
     }
 
     @Test
@@ -40,7 +39,7 @@ public class UserDaoTest extends BaseDaoTest<UserEntity> {
         this.baseCreate(entity);
 
         List<UserEntity> listOld = this.baseGetList(new ArrayList<>());
-        Assert.assertFalse(listOld.isEmpty());
+        assertFalse(listOld.isEmpty());
 
         entity.setName("new_test");
         List<UserEntity> listAdd = new ArrayList<>();
@@ -49,9 +48,9 @@ public class UserDaoTest extends BaseDaoTest<UserEntity> {
 
         List<UserEntity> listNew = this.baseGetList(new ArrayList<>());
 
-        Assert.assertFalse(listNew.isEmpty());
-        Assert.assertTrue(listNew.size() == listOld.size());
-        Assert.assertEquals(this.baseGet(entity.getId()).getName(), "new_test");
+        assertFalse(listNew.isEmpty());
+        assertTrue(listNew.size() == listOld.size());
+        assertEquals(this.baseGet(entity.getId()).getName(), "new_test");
     }
 
     @Test
@@ -59,7 +58,7 @@ public class UserDaoTest extends BaseDaoTest<UserEntity> {
         this.baseCreate(entity);
 
         List<UserEntity> listOld = this.baseGetList(new ArrayList<>());
-        Assert.assertFalse(listOld.isEmpty());
+        assertFalse(listOld.isEmpty());
 
         UserEntity newEntity = InitialValue.getUserEntity();
         List<UserEntity> listAdd = new ArrayList<>();
@@ -68,15 +67,15 @@ public class UserDaoTest extends BaseDaoTest<UserEntity> {
 
         List<UserEntity> listNew = this.baseGetList(new ArrayList<>());
 
-        Assert.assertFalse(listNew.isEmpty());
-        Assert.assertTrue(listNew.size() > listOld.size());
-        Assert.assertTrue(listNew.size() - listOld.size() == 1);
+        assertFalse(listNew.isEmpty());
+        assertTrue(listNew.size() > listOld.size());
+        assertTrue(listNew.size() - listOld.size() == 1);
     }
 
     @Test
     public void testCreate() {
         this.baseCreate(entity);
-        Assert.assertNotNull(entity.getId());
+        assertNotNull(entity.getId());
     }
 
     @Test
@@ -86,8 +85,8 @@ public class UserDaoTest extends BaseDaoTest<UserEntity> {
         entity.setName("new_test_v");
         this.baseUpdate(entity);
 
-        Assert.assertNotNull(entity);
-        Assert.assertEquals(this.baseGet(entity.getId()).getName(), "new_test_v");
+        assertNotNull(entity);
+        assertEquals(this.baseGet(entity.getId()).getName(), "new_test_v");
     }
 
     @Test
@@ -95,7 +94,7 @@ public class UserDaoTest extends BaseDaoTest<UserEntity> {
         this.baseCreate(entity);
         this.baseDelete(entity);
 
-        Assert.assertNull(this.baseGet(entity.getId()));
+        assertNull(this.baseGet(entity.getId()));
     }
 
     @Test

@@ -1,4 +1,4 @@
-package se.lnu.application.utils;
+package com.scf.server.application.utils;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

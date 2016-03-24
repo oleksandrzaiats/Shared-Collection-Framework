@@ -20,7 +20,7 @@ import java.util.List;
 @ContextConfiguration(classes = SpringRootConfig.class)
 @WebAppConfiguration
 @Ignore
-public abstract class BaseDaoTest<E extends CommonEntity> {
+public abstract class BaseDaoTest<E extends CommonEntity>  extends Assert {
 
 	@Autowired
 	public AbstractDAO<E> dao;
@@ -42,12 +42,12 @@ public abstract class BaseDaoTest<E extends CommonEntity> {
 
 	public void baseCreate(E entity) {
 		dao.create(entity);
-		Assert.assertNotNull(entity);
+		assertNotNull(entity);
 	}
 
 	public void baseUpdate(E entity) {
 		dao.update(entity);
-		Assert.assertNotNull(entity);
+		assertNotNull(entity);
 	}
 
 	public void baseDelete(E entity) {
