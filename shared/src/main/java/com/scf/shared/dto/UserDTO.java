@@ -3,18 +3,29 @@ package com.scf.shared.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class UserDTO implements CommonDTO {
 
+    @Min(1)
+    @Max(value = Long.MAX_VALUE)
     private Long id;
     @NotNull
-    @Size(min = 3, max = 255)
+    @Pattern(regexp="/^[a-z0-9_-]{3,20}$/")
     private String login;
+    @NotNull
+    @Pattern(regexp = "^[a-zA-Z]{3,40}$")
     private String name;
     @NotNull
-    @Size(min = 3, max = 255)
+    @Pattern(regexp = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,20})$/", message="Password "
+            + "must be from 6 to 20 characters long, "
+            + "must contain one Upper case, "
+            + "one Lower case, "
+            + "one special symbol: !,@,#,$,%,^,&,*,")
     private String password;
     @JsonIgnore
     private String role;

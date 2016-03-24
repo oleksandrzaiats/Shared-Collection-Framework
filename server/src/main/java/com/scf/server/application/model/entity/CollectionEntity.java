@@ -4,6 +4,11 @@ package com.scf.server.application.model.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import java.util.List;
 
 @Entity(name = "collection")
@@ -32,7 +37,10 @@ public class CollectionEntity implements CommonEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private UserEntity user;
-
+    
+    @NotNull
+    @Min(1)
+    @Max(value = Long.MAX_VALUE)
     public Long getId() {
         return id;
     }
@@ -41,6 +49,8 @@ public class CollectionEntity implements CommonEntity {
         this.id = id;
     }
 
+    @NotNull(message="Collection name can not be Null")
+    @Size(min = 1, max = 260, message="Collection name should contain from 1 to 260 characters")
     public String getName() {
         return name;
     }
@@ -48,11 +58,12 @@ public class CollectionEntity implements CommonEntity {
     public void setName(String name) {
         this.name = name;
     }
-
+    
+    @NotNull
     public String getKey() {
         return key;
     }
-
+    
     public void setKey(String key) {
         this.key = key;
     }
@@ -73,6 +84,7 @@ public class CollectionEntity implements CommonEntity {
         this.collectionList = collectionList;
     }
 
+    @NotNull
     public UserEntity getUser() {
         return user;
     }

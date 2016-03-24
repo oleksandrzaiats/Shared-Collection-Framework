@@ -19,16 +19,4 @@ public class CollectionDAO extends AbstractDAO<CollectionEntity> {
         }
         return null;
     }
-
-    public void delete(CollectionEntity entity) {
-        for (ArtifactEntity artifact : entity.getArtifactList()) {
-            getHibernateTemplate().delete("from " + getTableName(ArtifactEntity.class) + " where id =" +
-                    "(if ((select count(*) from " + getCATableName() + " where artifactList_id = ?) = 1, ?, -1))", artifact.getId());
-        }
-        super.delete(entity);
-    }
-
-    private String getCATableName() {
-        return getTableName(CollectionEntity.class) + "_" + getTableName(ArtifactEntity.class);
-    }
 }
