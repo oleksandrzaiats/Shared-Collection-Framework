@@ -5,6 +5,7 @@ import com.scf.server.application.model.entity.ArtifactEntity;
 import com.scf.server.application.model.entity.CollectionEntity;
 import com.scf.server.application.model.entity.UserEntity;
 import com.scf.server.application.security.UserRole;
+import com.scf.server.application.utils.PasswordHelper;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class InitialValue {
         userEntity.setName("test");
         userEntity.setLogin("login");
         userEntity.setRole(UserRole.ROLE_USER.toString());
-        userEntity.setPassword("123123");
+        userEntity.setPassword(PasswordHelper.encodePassword("123123"));
 
         return userEntity;
     }
