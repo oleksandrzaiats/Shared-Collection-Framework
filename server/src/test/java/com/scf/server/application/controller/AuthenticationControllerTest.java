@@ -1,7 +1,14 @@
 package com.scf.server.application.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.*;
+import com.scf.server.application.processor.UserProcessor;
+import com.scf.server.application.security.UserRole;
+import com.scf.server.configuration.SpringRootConfig;
+import com.scf.shared.dto.UserDTO;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,11 +20,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import se.lnu.application.dto.UserDTO;
-import se.lnu.application.processor.UserProcessor;
-import se.lnu.application.security.UserRole;
-import se.lnu.application.utils.PasswordHelper;
-import se.lnu.configuration.SpringRootConfig;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;

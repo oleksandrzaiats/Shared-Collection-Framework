@@ -1,6 +1,16 @@
 package com.scf.server.application.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.scf.server.application.processor.ArtifactProcessor;
+import com.scf.server.application.processor.CollectionProcessor;
+import com.scf.server.application.processor.UserProcessor;
+import com.scf.server.application.security.AuthUser;
+import com.scf.server.application.security.UserAuthentication;
+import com.scf.server.application.security.UserRole;
+import com.scf.server.configuration.SpringRootConfig;
+import com.scf.shared.dto.ArtifactDTO;
+import com.scf.shared.dto.CollectionDTO;
+import com.scf.shared.dto.UserDTO;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,28 +25,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import se.lnu.application.dto.ArtifactDTO;
-import se.lnu.application.dto.CollectionDTO;
-import se.lnu.application.dto.UserDTO;
-import se.lnu.application.processor.ArtifactProcessor;
-import se.lnu.application.processor.CollectionProcessor;
-import se.lnu.application.processor.UserProcessor;
-import se.lnu.application.security.AuthUser;
-import se.lnu.application.security.UserAuthentication;
-import se.lnu.application.security.UserRole;
-import se.lnu.configuration.SpringRootConfig;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.sun.deploy.perf.DeployPerfUtil.put;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

@@ -1,11 +1,9 @@
 package com.scf.server.application.model.dao;
 
+import com.scf.server.application.model.entity.UserEntity;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import se.lnu.application.entity.UserEntity;
-import se.lnu.application.utils.Filtering;
 
 import java.util.ArrayList;
 import java.util.List;

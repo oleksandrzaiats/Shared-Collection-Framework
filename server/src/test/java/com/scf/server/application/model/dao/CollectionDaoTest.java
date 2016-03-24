@@ -1,12 +1,12 @@
 package com.scf.server.application.model.dao;
 
+import com.scf.server.application.model.entity.ArtifactEntity;
+import com.scf.server.application.model.entity.CollectionEntity;
+import com.scf.server.application.model.entity.UserEntity;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import se.lnu.application.entity.ArtifactEntity;
-import se.lnu.application.entity.CollectionEntity;
-import se.lnu.application.entity.UserEntity;
 
 import java.util.ArrayList;
 import java.util.List;

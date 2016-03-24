@@ -1,9 +1,10 @@
 package com.scf.server.application.model.dao;
 
-import se.lnu.application.entity.UserEntity;
-import se.lnu.application.entity.ArtifactEntity;
-import se.lnu.application.entity.CollectionEntity;
-import se.lnu.application.security.UserRole;
+
+import com.scf.server.application.model.entity.ArtifactEntity;
+import com.scf.server.application.model.entity.CollectionEntity;
+import com.scf.server.application.model.entity.UserEntity;
+import com.scf.server.application.security.UserRole;
 
 import java.util.List;
 
