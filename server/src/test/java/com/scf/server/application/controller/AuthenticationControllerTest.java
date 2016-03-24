@@ -1,6 +1,7 @@
 package com.scf.server.application.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.scf.server.application.InitialValue;
 import com.scf.server.configuration.SpringRootConfig;
 import com.scf.shared.dto.UserDTO;
 import org.junit.After;
@@ -87,7 +88,7 @@ public class AuthenticationControllerTest extends AbstractControllerTest {
     @Test
     public void loginUser() throws Exception {
         userDTO = userProcessor.create(userDTO);
-        userDTO.setPassword("test");
+        userDTO.setPassword("123123");
 
         this.document.snippets(
                 responseFields(
@@ -101,5 +102,11 @@ public class AuthenticationControllerTest extends AbstractControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(this.objectMapper.writeValueAsString(userDTO)
                         )).andExpect(status().isOk());
+    }
+
+    @Override
+    protected UserDTO getUser() {
+        UserDTO userDTO = userConverter.convertToDTO(InitialValue.getUserEntity());
+        return userDTO;
     }
 }

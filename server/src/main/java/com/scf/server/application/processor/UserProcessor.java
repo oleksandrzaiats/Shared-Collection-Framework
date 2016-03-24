@@ -54,7 +54,7 @@ public class UserProcessor implements Processor<UserDTO> {
     }
 
 
-public UserDTO findUserByLogin(String login) {
+    public UserDTO findUserByLogin(String login) {
         UserEntity userEntity = userDAO.findUserByLogin(login);
         if (userEntity != null) {
             return userConverter.convertToDTO(userEntity);

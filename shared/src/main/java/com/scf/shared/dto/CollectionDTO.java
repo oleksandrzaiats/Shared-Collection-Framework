@@ -6,8 +6,11 @@ import java.util.List;
 
 public class CollectionDTO implements CommonDTO {
     private Long id;
-    
+
+    @NotNull
+    @Size(min = 1, max = 255)
     private String name;
+    @NotNull
     private String key;
     private UserDTO user;
 
@@ -22,8 +25,7 @@ public class CollectionDTO implements CommonDTO {
         this.id = id;
     }
 
-    @NotNull
-    @Size(min = 1, max = 260)
+
     public String getName() {
         return name;
     }
@@ -40,7 +42,6 @@ public class CollectionDTO implements CommonDTO {
         this.collectionList = collectionList;
     }
 
-    @NotNull
     public List<ArtifactDTO> getArtifactList() {
         return artifactList;
     }
@@ -49,7 +50,6 @@ public class CollectionDTO implements CommonDTO {
         this.artifactList = artifactList;
     }
 
-    @NotNull
     public String getKey() {
         return key;
     }
@@ -58,7 +58,6 @@ public class CollectionDTO implements CommonDTO {
         this.key = key;
     }
     
-    @NotNull
     public UserDTO getUser() {
         return user;
     }

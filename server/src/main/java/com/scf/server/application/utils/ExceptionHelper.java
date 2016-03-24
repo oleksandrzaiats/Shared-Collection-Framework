@@ -1,12 +1,9 @@
 package com.scf.server.application.utils;
 
+import com.scf.server.application.model.exception.*;
 import com.scf.shared.dto.ErrorDTO;
-import com.scf.server.application.model.exception.ErrorCode;
-import com.scf.server.application.model.exception.InvalidBeanException;
-import com.scf.server.application.model.exception.RecordNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import com.scf.server.application.model.exception.NoPermissionException;
 
 /**
  * Creating response based on caught exception.
@@ -25,6 +22,8 @@ public class ExceptionHelper {
         }
         if (e instanceof NoPermissionException) {
             return new ResponseEntity<>(ErrorCode.NO_PERMISSION.getErrorDTO(), HttpStatus.FORBIDDEN);
+        } else if (e instanceof UserExistsException) {
+            return new ResponseEntity<>(((UserExistsException) e).getErrorCode().getErrorDTO(), HttpStatus.CONFLICT);
         } else {
             errorDTO.setErrorCode(ErrorCode.INTERNAL_ERROR.getErrorCode());
             errorDTO.setMessage(ErrorCode.INTERNAL_ERROR.getMessage() + ": " + e.getMessage());

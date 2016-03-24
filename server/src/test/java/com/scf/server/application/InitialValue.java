@@ -1,4 +1,4 @@
-package com.scf.server.application.model.dao;
+package com.scf.server.application;
 
 
 import com.scf.server.application.model.entity.ArtifactEntity;
@@ -29,7 +29,7 @@ public class InitialValue {
         userEntity.setName("test");
         userEntity.setLogin("login");
         userEntity.setRole(UserRole.ROLE_USER.toString());
-        userEntity.setPassword("as123tesT*");
+        userEntity.setPassword("123123");
 
         return userEntity;
     }

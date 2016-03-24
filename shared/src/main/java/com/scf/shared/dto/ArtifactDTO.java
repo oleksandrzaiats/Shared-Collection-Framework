@@ -1,14 +1,18 @@
 package com.scf.shared.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class ArtifactDTO implements CommonDTO {
+    @Min(value = 1)
+    @Max(value = Long.MAX_VALUE)
     private Long id;
+    @NotNull
+    @Size(min = 1, max = 255)
     private String name;
     private String fileName;
     private String contentType;
@@ -16,9 +20,6 @@ public class ArtifactDTO implements CommonDTO {
     private byte[] fileBytes;
     private UserDTO user;
 
-    @NotNull
-    @Min(value = 1)
-    @Max(value = Long.MAX_VALUE)
     public Long getId() {
         return id;
     }
@@ -27,8 +28,6 @@ public class ArtifactDTO implements CommonDTO {
         this.id = id;
     }
 
-    @NotNull
-    @Size(min = 1, max = 260)
     public String getName() {
         return name;
     }
@@ -46,7 +45,7 @@ public class ArtifactDTO implements CommonDTO {
     }
     
     @NotNull
-    @Size(min = 1, max = 260)
+    @Size(min = 1, max = 255)
     public String getFileName() {
         return fileName;
     }

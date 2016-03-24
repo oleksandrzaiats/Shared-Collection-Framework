@@ -1,5 +1,6 @@
 package com.scf.server.application.model.dao;
 
+import com.scf.server.application.InitialValue;
 import com.scf.server.application.model.entity.ArtifactEntity;
 import com.scf.server.application.model.entity.CollectionEntity;
 import com.scf.server.application.model.entity.UserEntity;
