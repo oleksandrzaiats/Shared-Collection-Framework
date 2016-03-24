@@ -7,8 +7,6 @@ import javax.validation.constraints.*;
 
 public class UserDTO implements CommonDTO {
 
-    @Min(1)
-    @Max(value = Long.MAX_VALUE)
     private Long id;
     @NotNull
     @Size(min = 3, max = 255)

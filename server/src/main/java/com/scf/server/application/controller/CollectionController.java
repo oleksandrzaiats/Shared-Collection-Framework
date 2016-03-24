@@ -1,5 +1,6 @@
 package com.scf.server.application.controller;
 
+import com.scf.server.application.model.exception.InvalidBeanException;
 import com.scf.shared.dto.CollectionDTO;
 import com.scf.server.application.processor.CollectionProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ public class CollectionController extends AbstractController {
     public
     @ResponseBody
     ResponseEntity<?> get(@PathVariable Long id) {
+        if (id == null) {
+            throw new InvalidBeanException("Id parameter is null.");
+        }
         return new ResponseEntity<>(collectionProcessor.get(id), HttpStatus.OK);
     }
 
@@ -56,6 +60,7 @@ public class CollectionController extends AbstractController {
     public
     @ResponseBody
     ResponseEntity<?> update(@RequestBody CollectionDTO collectionDTO) {
+        validateBean(collectionDTO);
         return new ResponseEntity<>(collectionProcessor.update(collectionDTO, getCurrentUser()), HttpStatus.OK);
     }
 
@@ -63,6 +68,9 @@ public class CollectionController extends AbstractController {
     public
     @ResponseBody
     ResponseEntity<?> delete(@PathVariable Long id) {
+        if (id == null) {
+            throw new InvalidBeanException("Id parameter is null.");
+        }
         collectionProcessor.delete(id, getCurrentUser());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

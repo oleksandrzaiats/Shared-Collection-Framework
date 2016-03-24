@@ -1,5 +1,6 @@
 package com.scf.server.application.controller;
 
+import com.scf.server.application.model.exception.InvalidBeanException;
 import com.scf.shared.dto.ArtifactDTO;
 import com.scf.server.application.processor.ArtifactProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class ArtifactController extends AbstractController {
     public
     @ResponseBody
     ResponseEntity<?> get(@PathVariable Long id) {
+        if (id == null) {
+            throw new InvalidBeanException("Id parameter is null.");
+        }
         return new ResponseEntity<>(artifactProcessor.get(id), HttpStatus.OK);
     }
 
@@ -52,12 +56,19 @@ public class ArtifactController extends AbstractController {
     public
     @ResponseBody
     ResponseEntity<?> create(@RequestParam("file") MultipartFile file, @RequestParam("name") String name) throws IOException {
+        if (file == null) {
+            throw new InvalidBeanException("Request must contain artifact file with key \"file\".");
+        }
+        if (name == null || name.isEmpty()) {
+            throw new InvalidBeanException("Request must contain artifact name with key \"name\".");
+        }
         ArtifactDTO artifactDTO = new ArtifactDTO();
         artifactDTO.setName(name);
         artifactDTO.setFileBytes(file.getBytes());
         artifactDTO.setContentType(file.getContentType());
         artifactDTO.setFileName(file.getOriginalFilename());
         artifactDTO.setUser(getCurrentUser().getUser());
+        validateBean(artifactDTO);
         return new ResponseEntity<>(artifactProcessor.create(artifactDTO), HttpStatus.OK);
     }
 
@@ -65,6 +76,7 @@ public class ArtifactController extends AbstractController {
     public
     @ResponseBody
     ResponseEntity<?> update(@RequestBody ArtifactDTO artifactDTO) {
+        validateBean(artifactDTO);
         return new ResponseEntity<>(artifactProcessor.update(artifactDTO, getCurrentUser()), HttpStatus.OK);
     }
 
@@ -72,6 +84,9 @@ public class ArtifactController extends AbstractController {
     public
     @ResponseBody
     ResponseEntity<?> delete(@PathVariable Long id) {
+        if (id == null) {
+            throw new InvalidBeanException("Id parameter is null.");
+        }
         artifactProcessor.delete(id, getCurrentUser());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
