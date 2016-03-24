@@ -3,10 +3,8 @@ package com.scf.server.application.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scf.server.application.processor.ArtifactProcessor;
 import com.scf.server.application.processor.CollectionProcessor;
-import com.scf.server.application.processor.UserProcessor;
 import com.scf.server.application.security.AuthUser;
 import com.scf.server.application.security.UserAuthentication;
-import com.scf.server.application.security.UserRole;
 import com.scf.server.configuration.SpringRootConfig;
 import com.scf.shared.dto.ArtifactDTO;
 import com.scf.shared.dto.CollectionDTO;
@@ -42,16 +40,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = SpringRootConfig.class)
 @WebAppConfiguration
 @EnableWebMvc
-public class CollectionControllerTest {
+public class CollectionControllerTest extends AbstractControllerTest {
 
     @Rule
     public final RestDocumentation restDocumentation = new RestDocumentation("build/generated-snippets");
 
     @Autowired
     private WebApplicationContext context;
-
-    @Autowired
-    private UserProcessor userProcessor;
 
     @Autowired
     private ArtifactProcessor artifactProcessor;
@@ -89,9 +84,9 @@ public class CollectionControllerTest {
         artifactDTOs.add(artifactDTO);
         collectionDTO = getCollection(userDTO, artifactDTOs, new ArrayList<>());
 
-        Assert.assertNotNull(userDTO.getId());
-        Assert.assertNotNull(artifactDTO.getId());
-        Assert.assertNotNull(collectionDTO.getId());
+        assertNotNull(userDTO.getId());
+        assertNotNull(artifactDTO.getId());
+        assertNotNull(collectionDTO.getId());
     }
 
     @After
@@ -168,7 +163,7 @@ public class CollectionControllerTest {
         List<CollectionDTO> collectionDTOs = new ArrayList<>();
         collectionDTOs.add(collectionDTO);
 
-        CollectionDTO newCollectionDTO = getCollection(userDTO, artifactDTOs,collectionDTOs);
+        CollectionDTO newCollectionDTO = getCollection(userDTO, artifactDTOs, collectionDTOs);
 
         this.mockMvc.perform(
                 post("/collection/")
@@ -219,7 +214,7 @@ public class CollectionControllerTest {
         List<CollectionDTO> collectionDTOs = new ArrayList<>();
         collectionDTOs.add(collectionDTO);
 
-        CollectionDTO newCollectionDTO = getCollection(userDTO, artifactDTOs,collectionDTOs);
+        CollectionDTO newCollectionDTO = getCollection(userDTO, artifactDTOs, collectionDTOs);
 
         this.mockMvc.perform(
                 delete("/collection/" + newCollectionDTO.getId()))
@@ -227,15 +222,7 @@ public class CollectionControllerTest {
 
     }
 
-    private UserDTO getUser() {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setName("test");
-        userDTO.setRole(UserRole.ROLE_USER.toString());
-        userDTO.setLogin("test_user_login");
-        userDTO.setPassword("test");
 
-        return userProcessor.create(userDTO);
-    }
     private CollectionDTO getCollection(UserDTO userDTO, List<ArtifactDTO> artifactDTOs, List<CollectionDTO> collectionDTOs) {
         CollectionDTO collectionDTO = new CollectionDTO();
         collectionDTO.setName("test");

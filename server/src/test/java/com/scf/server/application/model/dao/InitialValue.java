@@ -29,7 +29,7 @@ public class InitialValue {
         userEntity.setName("test");
         userEntity.setLogin("login");
         userEntity.setRole(UserRole.ROLE_USER.toString());
-        userEntity.setPassword("test");
+        userEntity.setPassword("as123tesT*");
 
         return userEntity;
     }

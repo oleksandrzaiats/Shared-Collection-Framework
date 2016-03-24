@@ -1,9 +1,6 @@
 package com.scf.server.application.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.scf.server.application.processor.UserProcessor;
-import com.scf.server.application.security.UserRole;
-import com.scf.server.application.utils.PasswordHelper;
 import com.scf.server.configuration.SpringRootConfig;
 import com.scf.shared.dto.UserDTO;
 import org.junit.After;
@@ -34,16 +31,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = SpringRootConfig.class)
 @WebAppConfiguration
-public class AuthenticationControllerTest {
+public class AuthenticationControllerTest extends AbstractControllerTest {
 
     @Rule
     public final RestDocumentation restDocumentation = new RestDocumentation("build/generated-snippets");
 
     @Autowired
     private WebApplicationContext context;
-
-    @Autowired
-    private UserProcessor userProcessor;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -107,15 +101,5 @@ public class AuthenticationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(this.objectMapper.writeValueAsString(userDTO)
                         )).andExpect(status().isOk());
-    }
-
-    private UserDTO getUser() {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setName("test");
-        userDTO.setRole(UserRole.ROLE_USER.toString());
-        userDTO.setLogin("test_user");
-        userDTO.setPassword(PasswordHelper.encodePassword("test"));
-
-        return userDTO;
     }
 }

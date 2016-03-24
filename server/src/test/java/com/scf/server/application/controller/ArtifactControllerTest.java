@@ -2,14 +2,15 @@ package com.scf.server.application.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scf.server.application.processor.ArtifactProcessor;
-import com.scf.server.application.processor.UserProcessor;
 import com.scf.server.application.security.AuthUser;
 import com.scf.server.application.security.UserAuthentication;
-import com.scf.server.application.security.UserRole;
 import com.scf.server.configuration.SpringRootConfig;
 import com.scf.shared.dto.ArtifactDTO;
 import com.scf.shared.dto.UserDTO;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -43,16 +44,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = SpringRootConfig.class)
 @WebAppConfiguration
 @EnableWebMvc
-public class ArtifactControllerTest extends Assert {
+public class ArtifactControllerTest extends AbstractControllerTest {
 
     @Rule
     public final RestDocumentation restDocumentation = new RestDocumentation("build/generated-snippets");
 
     @Autowired
     private WebApplicationContext context;
-
-    @Autowired
-    private UserProcessor userProcessor;
 
     @Autowired
     private ArtifactProcessor artifactProcessor;
@@ -112,7 +110,7 @@ public class ArtifactControllerTest extends Assert {
                 get("/artifact/")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -166,7 +164,7 @@ public class ArtifactControllerTest extends Assert {
         SecurityContextHolder.getContext().setAuthentication(userAuthentication);
 
         FileInputStream fileInputStream = new FileInputStream(getFile("artifact.jpg"));
-        MockMultipartFile file = new MockMultipartFile("file", "1","multipart/form-data",fileInputStream);
+        MockMultipartFile file = new MockMultipartFile("file", "1", "multipart/form-data", fileInputStream);
 
         MvcResult result = mockMvc.perform(fileUpload("/artifact/")
                 .file(file)
@@ -199,7 +197,7 @@ public class ArtifactControllerTest extends Assert {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(this.objectMapper.writeValueAsString(artifactDTO)
-                ))
+                        ))
                 .andExpect(status().isOk());
     }
 
@@ -212,17 +210,7 @@ public class ArtifactControllerTest extends Assert {
 
         this.mockMvc.perform(
                 delete("/artifact/" + artifact.getId()))
-                        .andExpect(status().isNoContent());
-    }
-
-    private UserDTO getUser() {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setName("test");
-        userDTO.setRole(UserRole.ROLE_USER.toString());
-        userDTO.setLogin("new_test_user_login");
-        userDTO.setPassword("test");
-
-        return userProcessor.create(userDTO);
+                .andExpect(status().isNoContent());
     }
 
     private ArtifactDTO getArtifact(UserDTO userDTO) throws IOException {
