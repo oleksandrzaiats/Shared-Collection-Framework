@@ -1,2 +1,6 @@
 rootProject.name = 'FileFramework'
+include 'client'
+include 'shared'
+include 'server'
+include 'sample'
 
