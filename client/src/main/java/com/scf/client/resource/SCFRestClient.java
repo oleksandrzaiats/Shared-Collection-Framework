@@ -2,7 +2,7 @@ package com.scf.client.resource;
 
 import com.scf.client.config.Configuration;
 import com.scf.shared.dto.CommonDTO;
-import org.apache.http.client.HttpClient;
+import com.scf.shared.dto.TokenDTO;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -20,6 +20,8 @@ import org.springframework.web.client.RestTemplate;
 import javax.net.ssl.SSLContext;
 import java.util.List;
 
+import static com.scf.shared.utils.StringUtils.AUTH_HEADER_NAME;
+
 public class SCFRestClient extends RestTemplate {
 
     private final Configuration configuration;
@@ -28,49 +30,51 @@ public class SCFRestClient extends RestTemplate {
 
     public SCFRestClient(Configuration configuration) {
         super();
-        setRequestFactory(getClientHttpRequestFactory());
+        this.configuration = configuration;
+        configureRestClient();
+    }
+
+    private void configureRestClient() {
         List<HttpMessageConverter<?>> messageConverters = getMessageConverters();
         messageConverters.add(new MappingJackson2HttpMessageConverter());
         setMessageConverters(messageConverters);
-        this.configuration = configuration;
-    }
-
-    private HttpClient createHttpClient() {
         try {
             SSLContext sslcontext = SSLContexts.custom()
                     .loadTrustMaterial(null, (chain, authType) -> true)
                     .build();
             SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[]{"TLSv1"}, null, new NoopHostnameVerifier());
             CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
-            return httpclient;
-        }catch (Exception e) {
-
+            HttpComponentsClientHttpRequestFactory clientHttpRequestFactory =
+                    new HttpComponentsClientHttpRequestFactory(httpclient);
+            clientHttpRequestFactory.setConnectTimeout(TIMEOUT);
+            setRequestFactory(clientHttpRequestFactory);
+            setErrorHandler(new SCFResponseErrorHandler());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        return null;
-    }
-
-    private HttpComponentsClientHttpRequestFactory getClientHttpRequestFactory() {
-        HttpComponentsClientHttpRequestFactory clientHttpRequestFactory =
-                new HttpComponentsClientHttpRequestFactory(createHttpClient());
-        clientHttpRequestFactory.setConnectTimeout(TIMEOUT);
-        return clientHttpRequestFactory;
     }
 
     public <R> R executeRequest(ResourceMapping resourceMapping, CommonDTO request) {
+        return executeRequest(null, resourceMapping, request);
+    }
+
+    public <R> R executeRequest(TokenDTO tokenDTO, ResourceMapping resourceMapping, CommonDTO request) {
         String url = configuration.getServerUrl() + resourceMapping.getUrlSuffix();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(resourceMapping.getMediaType());
+        if(tokenDTO != null && tokenDTO.getToken() != null) {
+            httpHeaders.set(AUTH_HEADER_NAME, tokenDTO.getToken());
+        }
         HttpEntity<CommonDTO> httpEntity = new HttpEntity<>(request, httpHeaders);
-        RequestCallback requestCallback = httpEntityCallback(httpEntity, resourceMapping.getResponseClass());
+        RequestCallback requestCallback = httpEntityCallback(httpEntity, resourceMapping.getResponseClass().getType());
         HttpMessageConverterExtractor<R> responseExtractor =
-                new HttpMessageConverterExtractor<R>(resourceMapping.getResponseClass(), getMessageConverters());
+                new HttpMessageConverterExtractor<R>(resourceMapping.getResponseClass().getType(), getMessageConverters());
         try {
             R response = execute(url, resourceMapping.getHttpMethod(), requestCallback, responseExtractor);
             return response;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
 }

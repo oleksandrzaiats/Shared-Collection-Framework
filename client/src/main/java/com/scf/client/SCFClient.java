@@ -1,9 +1,11 @@
 package com.scf.client;
 
 import com.scf.client.config.Configuration;
+import com.scf.client.resource.ResourceMapping;
 import com.scf.shared.dto.ArtifactDTO;
 import com.scf.shared.dto.CollectionDTO;
 import com.scf.shared.dto.TokenDTO;
+import com.scf.shared.exception.InvalidBeanException;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.FileInputStream;
@@ -35,7 +37,7 @@ public class SCFClient extends AbstractClient {
      * @return list of collections which are created by current user.
      */
     public List<CollectionDTO> getAllCollections() {
-        throw new NotImplementedException();
+        return restClient.executeRequest(tokenDTO, ResourceMapping.COLLECTION_GET_LIST, null);
     }
 
     /**
@@ -45,7 +47,10 @@ public class SCFClient extends AbstractClient {
      * @return collection object.
      */
     public CollectionDTO getCollection(Long collectionId) {
-        throw new NotImplementedException();
+        validateId(collectionId);
+        ResourceMapping collectionGet = ResourceMapping.COLLECTION_GET;
+        collectionGet.setUrlParameters(new String[]{collectionId.toString()});
+        return restClient.executeRequest(tokenDTO, collectionGet, null);
     }
 
     /**
@@ -55,7 +60,12 @@ public class SCFClient extends AbstractClient {
      * @return collection object.
      */
     public CollectionDTO getCollectionBySharedKey(String sharedKey) {
-        throw new NotImplementedException();
+        if (sharedKey == null || sharedKey.isEmpty()) {
+            throw new InvalidBeanException("SharedKey parameter is null or empty.");
+        }
+        ResourceMapping collectionGet = ResourceMapping.COLLECTION_GET_BY_SHARED_KEY;
+        collectionGet.setUrlParameters(new String[]{sharedKey});
+        return restClient.executeRequest(tokenDTO, collectionGet, null);
     }
 
     /**
@@ -65,7 +75,8 @@ public class SCFClient extends AbstractClient {
      * @return created collection.
      */
     public CollectionDTO createCollection(CollectionDTO collection) {
-        throw new NotImplementedException();
+        validateBean(collection);
+        return restClient.executeRequest(tokenDTO, ResourceMapping.COLLECTION_POST, collection);
     }
 
     /**
@@ -75,7 +86,8 @@ public class SCFClient extends AbstractClient {
      * @return updated collection.
      */
     public CollectionDTO updateCollection(CollectionDTO collection) {
-        throw new NotImplementedException();
+        validateBean(collection);
+        return restClient.executeRequest(tokenDTO, ResourceMapping.COLLECTION_UPDATE, collection);
     }
 
     /**
@@ -84,7 +96,10 @@ public class SCFClient extends AbstractClient {
      * @param collection collection to delete.
      */
     public void deleteCollection(CollectionDTO collection) {
-        throw new NotImplementedException();
+        validateId(collection.getId());
+        ResourceMapping collectionDelete = ResourceMapping.COLLECTION_DELETE;
+        collectionDelete.setUrlParameters(new String[]{collection.getId().toString()});
+        restClient.executeRequest(tokenDTO, collectionDelete, collection);
     }
 
     /**

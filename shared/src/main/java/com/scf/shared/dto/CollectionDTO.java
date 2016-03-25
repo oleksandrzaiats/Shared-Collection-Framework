@@ -10,7 +10,6 @@ public class CollectionDTO implements CommonDTO {
     @NotNull
     @Size(min = 1, max = 255)
     private String name;
-    @NotNull
     private String key;
     private UserDTO user;
 
