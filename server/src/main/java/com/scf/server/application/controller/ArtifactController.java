@@ -1,8 +1,8 @@
 package com.scf.server.application.controller;
 
 import com.scf.server.application.model.exception.InvalidBeanException;
-import com.scf.shared.dto.ArtifactDTO;
 import com.scf.server.application.processor.ArtifactProcessor;
+import com.scf.shared.dto.ArtifactDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,6 +72,37 @@ public class ArtifactController extends AbstractController {
         return new ResponseEntity<>(artifactProcessor.create(artifactDTO), HttpStatus.OK);
     }
 
+    /**
+     * Update artifact's file.
+     *
+     * @param file file which will replace existing file.
+     * @param id   identifier of artifact.
+     * @return artifact with new properties.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/{id}/file")
+    public
+    @ResponseBody
+    ResponseEntity<?> updateFile(@RequestParam("file") MultipartFile file, @PathVariable Long id) throws IOException {
+        if (file == null) {
+            throw new InvalidBeanException("Request must contain artifact file with key \"file\".");
+        }
+        if (id == null) {
+            throw new InvalidBeanException("Request must contain artifact id with key \"id\".");
+        }
+        ArtifactDTO artifactDTO = artifactProcessor.get(id);
+        artifactDTO.setFileBytes(file.getBytes());
+        artifactDTO.setContentType(file.getContentType());
+        artifactDTO.setFileName(file.getOriginalFilename());
+        validateBean(artifactDTO);
+        return new ResponseEntity<>(artifactProcessor.update(artifactDTO, getCurrentUser()), HttpStatus.OK);
+    }
+
+    /**
+     * Update artifact information.
+     *
+     * @param artifactDTO changed artifact.
+     * @return updated artifact.
+     */
     @RequestMapping(method = RequestMethod.PUT, path = "/")
     public
     @ResponseBody
