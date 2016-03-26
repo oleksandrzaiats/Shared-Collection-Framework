@@ -27,8 +27,8 @@ public enum ResourceMapping {
     ARTIFACT_GET("artifact/{0}", HttpMethod.GET, MediaType.APPLICATION_JSON, new ParameterizedTypeReference<ArtifactDTO>(){}),
     ARTIFACT_UPDATE("artifact/", HttpMethod.PUT, MediaType.APPLICATION_JSON, new ParameterizedTypeReference<ArtifactDTO>(){}),
     ARTIFACT_DELETE("artifact/{0}", HttpMethod.DELETE, MediaType.APPLICATION_JSON, new ParameterizedTypeReference<String>(){}),
-    // TODO
-    ARTIFACT_FILE("artifact/{0}/file", HttpMethod.GET, MediaType.APPLICATION_JSON, new ParameterizedTypeReference<String>(){}),
+    ARTIFACT_FILE("artifact/{0}/file", HttpMethod.GET, MediaType.APPLICATION_JSON, new ParameterizedTypeReference<byte[]>(){}),
+    ARTIFACT_UPDATE_FILE("artifact/{0}/file", HttpMethod.POST, MediaType.MULTIPART_FORM_DATA, new ParameterizedTypeReference<ArtifactDTO>(){}),
     ;
 
 

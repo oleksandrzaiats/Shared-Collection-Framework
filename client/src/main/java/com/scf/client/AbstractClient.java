@@ -39,6 +39,11 @@ public abstract class AbstractClient {
         }
     }
 
+    /**
+     * Method for id validation.
+     *
+     * @param id
+     */
     protected void validateId(Long id) {
         if (id == null) {
             throw new InvalidBeanException("Id parameter is null.");
