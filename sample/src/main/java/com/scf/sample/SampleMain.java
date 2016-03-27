@@ -10,8 +10,8 @@ import com.scf.shared.dto.TokenDTO;
 import com.scf.shared.dto.UserDTO;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.List;
 
 public class SampleMain {
@@ -36,14 +36,14 @@ public class SampleMain {
         CollectionDTO collectionDTO1 = scfClient.getCollectionBySharedKey(allCollections.get(0).getKey());
         collectionDTO.setName("new_changed_name");
         collectionDTO1 = scfClient.updateCollection(collectionDTO);
-        scfClient.deleteCollection(collectionDTO1);
-//        collectionDTO1 = scfClient.getCollection(collectionDTO.getId());
 
         File file = new File("/home/zaiats/Projects/Shared-Collection-Framework/server/src/main/resources/application.properties");
-        FileInputStream fileInputStream = new FileInputStream(file);
         ArtifactDTO new_artifact = scfClient.createArtifact("new_artifact", file);
         new_artifact.setName("changed_One");
         new_artifact = scfClient.updateArtifact(new_artifact);
+
+        collectionDTO1.setArtifactList(Arrays.asList(new_artifact));
+        collectionDTO1 = scfClient.updateCollection(collectionDTO1);
 
         File file1 = new File("/home/zaiats/Projects/Shared-Collection-Framework/server/src/main/");
         scfClient.downloadArtifactFile(new_artifact, file1);
@@ -51,8 +51,9 @@ public class SampleMain {
         file = new File("/home/zaiats/Projects/Shared-Collection-Framework/server/build.gradle");
         new_artifact = scfClient.updateArtifactFile(new_artifact, file);
         scfClient.downloadArtifactFile(new_artifact, file1);
-
+        // TODO ConstraintViolationException appears after this method execution
         scfClient.deleteArtifact(new_artifact);
+        scfClient.deleteCollection(collectionDTO1);
 
     }
 
