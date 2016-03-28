@@ -29,6 +29,7 @@ public class CollectionEntity implements CommonEntity {
     private String key;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "col_art")
     private List<ArtifactEntity> artifactList;
 
     @ManyToMany(fetch = FetchType.EAGER)
