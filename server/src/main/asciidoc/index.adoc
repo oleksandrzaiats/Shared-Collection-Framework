@@ -1,0 +1,161 @@
+= Shared Collection Framework Rest API documentation.
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+[introduction]
+= Introduction
+
+Person-service is a RESTful microservice for ...
+
+[[overview]]
+= Overview
+
+[[overview-http-verbs]]
+== HTTP verbs
+Person-service tries to adhere as closely as possible to standard HTTP and REST conventions in its
+use of HTTP verbs.
+|===
+| Verb | Usage
+
+| `GET`
+| Used to retrieve a resource
+
+| `POST`
+| Used to create a new resource
+
+| `PUT`
+| Used to update an existing resource, full updates only
+
+| `DELETE`
+| Used to delete an existing resource
+|===
+
+[[overview-http-status-codes]]
+== HTTP status codes
+Person-service tries to adhere as closely as possible to standard HTTP and REST conventions in its
+use of HTTP status codes.
+
+|===
+| Status code | Usage
+
+| `200 OK`
+| Standard response for successful HTTP requests.
+| The actual response will depend on the request method used.
+| In a GET request, the response will contain an entity corresponding to the requested resource.
+| In a POST request, the response will contain an entity describing or containing the result of the action.
+
+| `201 Created`
+| The request has been fulfilled and resulted in a new resource being created.
+
+| `204 No Content`
+| The server successfully processed the request, but is not returning any content.
+
+| `400 Bad Request`
+| The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing).
+
+| `404 Not Found`
+| The requested resource could not be found but may be available again in the future. Subsequent requests by the client are permissible.
+|===
+
+[[resources]]
+= Resources
+
+
+[[resources-users]]
+== Users
+The User resource is used to register user and to login in system.
+
+
+[[resource-register]]
+=== Register new user.
+A `POST` request register new user.
+
+include::{snippets}/create-user/response-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/create-user/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/create-user/http-response.adoc[]
+
+
+[[resource-login]]
+=== Login to system and get token.
+A `POST` request to get token.
+
+include::{snippets}/login-user/response-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/login-user/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/login-user/http-response.adoc[]
+
+[[resource-collection-get]]
+=== Fetching collections
+A `GET` request fetches all collections for user.
+
+include::{snippets}/get-person/response-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/get-person/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/get-person/http-response.adoc[]
+
+[[resource-collection-get-id]]
+=== Fetching collection by id
+A `GET` request fetches collection by id.
+
+include::{snippets}/get-collection-by-id/response-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/get-collection-by-id/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/get-collection-by-id/http-response.adoc[]
+
+[[resource-people-create]]
+=== Creating people
+A `POST` request creates a new person.
+
+==== Request structure
+
+include::{snippets}/create-person/request-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/create-person/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/create-person/http-response.adoc[]
+
+
+[[resource-people-update]]
+=== Updating people
+A `PUT` request updates an existing person.
+
+==== Request structure
+
+include::{snippets}/create-person/request-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/update-person/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/update-person/http-response.adoc[]
