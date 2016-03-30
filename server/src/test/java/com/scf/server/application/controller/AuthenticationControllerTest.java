@@ -2,6 +2,7 @@ package com.scf.server.application.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scf.server.application.InitialValue;
+import com.scf.server.application.model.exception.ErrorCode;
 import com.scf.server.configuration.SpringRootConfig;
 import com.scf.shared.dto.UserDTO;
 import org.junit.After;
@@ -10,6 +11,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
@@ -63,11 +65,18 @@ public class AuthenticationControllerTest extends AbstractControllerTest {
     @After
     public void tearDown() {
         userDTO = userProcessor.findUserByLogin(userDTO.getLogin());
-        userProcessor.delete(userDTO.getId(), null);
+        try {
+            userProcessor.delete(userDTO.getId(), null);
+        } catch(DataIntegrityViolationException exception) {
+            System.out.println(ErrorCode.USER_CANNOT_BE_DELETED);
+        }
+
     }
 
     @Test
     public void createUser() throws Exception {
+        userDTO.setLogin(String.valueOf(System.currentTimeMillis()));
+
         this.document.snippets(
                 responseFields(
                         fieldWithPath("id").description("The user's id"),

@@ -91,7 +91,8 @@ public class CollectionControllerTest extends AbstractControllerTest {
 
     @After
     public void tearDown() {
-        //TODO: add delete logic here
+        collectionProcessor.delete(collectionDTO.getId(), authUser);
+        userProcessor.delete(userDTO.getId(), authUser);
     }
 
     @Test

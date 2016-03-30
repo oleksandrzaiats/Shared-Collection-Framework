@@ -10,6 +10,7 @@ public enum ErrorCode {
     USER_NOT_FOUND(5, "User does not exist"),
     USER_EXISTS(6, "User with this login already exists"),
     NO_PERMISSION(7, "You don't have permission for editing or deleting this object"),
+    USER_CANNOT_BE_DELETED(8, "User cannot be deleted, because he has connected artifacts")
     ;
 
     ErrorDTO apiError;
