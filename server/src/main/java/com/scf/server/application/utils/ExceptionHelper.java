@@ -22,7 +22,8 @@ public class ExceptionHelper {
         }
         if (e instanceof NoPermissionException) {
             return new ResponseEntity<>(ErrorCode.NO_PERMISSION.getErrorDTO(), HttpStatus.FORBIDDEN);
-        } else if (e instanceof UserExistsException) {
+        }
+        if (e instanceof UserExistsException) {
             return new ResponseEntity<>(((UserExistsException) e).getErrorCode().getErrorDTO(), HttpStatus.CONFLICT);
         } else {
             errorDTO.setErrorCode(ErrorCode.INTERNAL_ERROR.getErrorCode());

@@ -10,13 +10,13 @@ import com.scf.server.application.security.UserAuthentication;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.scf.shared.utils.StringUtils.AUTH_HEADER_NAME;
+
 /**
  * Contains methods for adding/reading a token to/from a header
  */
 @Service
 public class TokenAuthenticationServiceImpl implements TokenAuthenticationService {
-
-    private static final String AUTH_HEADER_NAME = "X-AUTH-TOKEN";
 
     @Autowired
     private TokenHandler tokenHandler;

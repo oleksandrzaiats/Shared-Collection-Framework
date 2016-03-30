@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.scf.server.application.model.exception.InvalidBeanException;
 import com.scf.server.application.utils.ExceptionHelper;
-import com.scf.server.application.utils.StringUtils;
+import com.scf.shared.utils.StringUtils;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

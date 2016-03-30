@@ -24,6 +24,7 @@ public class AuthClient extends AbstractClient {
      * @return token to use in {@link SCFClient}.
      */
     public TokenDTO login(UserDTO user) {
+        validateBean(user);
         return restClient.executeRequest(ResourceMapping.LOGIN, user);
     }
 
@@ -33,6 +34,7 @@ public class AuthClient extends AbstractClient {
      * @return created user with Id.
      */
     public UserDTO register(UserDTO user) {
+        validateBean(user);
         return restClient.executeRequest(ResourceMapping.REGISTER, user);
     }
 }

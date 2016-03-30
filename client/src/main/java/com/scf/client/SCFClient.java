@@ -1,13 +1,15 @@
 package com.scf.client;
 
 import com.scf.client.config.Configuration;
+import com.scf.client.resource.ResourceMapping;
 import com.scf.shared.dto.ArtifactDTO;
 import com.scf.shared.dto.CollectionDTO;
 import com.scf.shared.dto.TokenDTO;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import com.scf.shared.exception.InvalidBeanException;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.util.LinkedMultiValueMap;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -35,7 +37,7 @@ public class SCFClient extends AbstractClient {
      * @return list of collections which are created by current user.
      */
     public List<CollectionDTO> getAllCollections() {
-        throw new NotImplementedException();
+        return restClient.executeRequest(tokenDTO, ResourceMapping.COLLECTION_GET_LIST, null);
     }
 
     /**
@@ -45,7 +47,10 @@ public class SCFClient extends AbstractClient {
      * @return collection object.
      */
     public CollectionDTO getCollection(Long collectionId) {
-        throw new NotImplementedException();
+        validateId(collectionId);
+        ResourceMapping collectionGet = ResourceMapping.COLLECTION_GET;
+        collectionGet.setUrlParameters(new String[]{collectionId.toString()});
+        return restClient.executeRequest(tokenDTO, collectionGet, null);
     }
 
     /**
@@ -55,7 +60,12 @@ public class SCFClient extends AbstractClient {
      * @return collection object.
      */
     public CollectionDTO getCollectionBySharedKey(String sharedKey) {
-        throw new NotImplementedException();
+        if (sharedKey == null || sharedKey.isEmpty()) {
+            throw new InvalidBeanException("SharedKey parameter is null or empty.");
+        }
+        ResourceMapping collectionGet = ResourceMapping.COLLECTION_GET_BY_SHARED_KEY;
+        collectionGet.setUrlParameters(new String[]{sharedKey});
+        return restClient.executeRequest(tokenDTO, collectionGet, null);
     }
 
     /**
@@ -65,7 +75,8 @@ public class SCFClient extends AbstractClient {
      * @return created collection.
      */
     public CollectionDTO createCollection(CollectionDTO collection) {
-        throw new NotImplementedException();
+        validateBean(collection);
+        return restClient.executeRequest(tokenDTO, ResourceMapping.COLLECTION_POST, collection);
     }
 
     /**
@@ -75,7 +86,8 @@ public class SCFClient extends AbstractClient {
      * @return updated collection.
      */
     public CollectionDTO updateCollection(CollectionDTO collection) {
-        throw new NotImplementedException();
+        validateBean(collection);
+        return restClient.executeRequest(tokenDTO, ResourceMapping.COLLECTION_UPDATE, collection);
     }
 
     /**
@@ -84,7 +96,10 @@ public class SCFClient extends AbstractClient {
      * @param collection collection to delete.
      */
     public void deleteCollection(CollectionDTO collection) {
-        throw new NotImplementedException();
+        validateId(collection.getId());
+        ResourceMapping collectionDelete = ResourceMapping.COLLECTION_DELETE;
+        collectionDelete.setUrlParameters(new String[]{collection.getId().toString()});
+        restClient.executeRequest(tokenDTO, collectionDelete, collection);
     }
 
     /**
@@ -93,7 +108,7 @@ public class SCFClient extends AbstractClient {
      * @return list of artifacts which are created by current user.
      */
     public List<ArtifactDTO> getAllArtifacts() {
-        throw new NotImplementedException();
+        return restClient.executeRequest(tokenDTO, ResourceMapping.ARTIFACT_GET_LIST, null);
     }
 
     /**
@@ -103,49 +118,99 @@ public class SCFClient extends AbstractClient {
      * @return artifact object.
      */
     public ArtifactDTO getArtifact(Long artifactId) {
-        throw new NotImplementedException();
+        validateId(artifactId);
+        ResourceMapping artifactGet = ResourceMapping.ARTIFACT_GET;
+        artifactGet.setUrlParameters(new String[]{artifactId.toString()});
+        return restClient.executeRequest(tokenDTO, artifactGet, null);
     }
 
     /**
      * Method for downloading file from artifact.
      *
-     * @param artifact     artifact which contain file.
-     * @param outputStream stream for file which will be downloaded.
+     * @param artifact artifact which contain file.
+     * @param file     with path to directory where file will be saved
+     * @return downloaded file
      */
-    public void downloadArtifactFile(ArtifactDTO artifact, FileOutputStream outputStream) {
-        throw new NotImplementedException();
+    public File downloadArtifactFile(ArtifactDTO artifact, File file) {
+        validateId(artifact.getId());
+        if (!file.exists()) {
+            throw new IllegalArgumentException("Directory does not exists.");
+        }
+        String absolutePath = file.getAbsolutePath();
+        if (absolutePath.endsWith(File.separator)) {
+            absolutePath = absolutePath + artifact.getFileName();
+        } else {
+            absolutePath = absolutePath + File.separator + artifact.getFileName();
+        }
+        File artifactFile = new File(absolutePath);
+        if (artifactFile.exists()) {
+            throw new RuntimeException("'" + artifact.getFileName() + "' already exists in '" + file.getAbsolutePath() + "' directory.");
+        }
+
+        ResourceMapping downloadFIle = ResourceMapping.ARTIFACT_FILE;
+        downloadFIle.setUrlParameters(new String[]{artifact.getId().toString()});
+        restClient.downloadFile(tokenDTO, downloadFIle, artifactFile);
+        return artifactFile;
     }
 
     /**
      * Method for creating new artifact.
      *
      * @param artifactName name of artifact.
-     * @param inputStream  stream of file to be saved.
+     * @param file         file to be saved.
      * @return created artifact.
      */
-    public ArtifactDTO createArtifact(String artifactName, FileInputStream inputStream) {
-        throw new NotImplementedException();
+    public ArtifactDTO createArtifact(String artifactName, File file) {
+        if (artifactName == null) {
+            throw new NullPointerException("Artifact's name parameter is null.");
+        }
+        if (file == null) {
+            throw new NullPointerException("File is null.");
+        }
+        if (!file.exists()) {
+            throw new IllegalArgumentException("File does not exists.");
+        }
+        FileSystemResource fileSystemResource = new FileSystemResource(file);
+        LinkedMultiValueMap<String, Object> requestParameterMap = new LinkedMultiValueMap<>();
+        requestParameterMap.add("file", fileSystemResource);
+        requestParameterMap.add("name", artifactName);
+
+        return restClient.executeMultipartRequest(tokenDTO, ResourceMapping.ARTIFACT_POST, requestParameterMap);
     }
 
     /**
-     * Method for updating artifact.
+     * Method for updating artifact's information.
      *
      * @param artifact artifact to update.
      * @return updated artifact.
      */
     public ArtifactDTO updateArtifact(ArtifactDTO artifact) {
-        throw new NotImplementedException();
+        validateBean(artifact);
+        return restClient.executeRequest(tokenDTO, ResourceMapping.ARTIFACT_UPDATE, artifact);
     }
 
     /**
-     * Method for updating artifact and replace artifact file.
+     * Method for updating artifact's file.
      *
-     * @param artifact    artifact to update.
-     * @param inputStream stream of file which will replace existing one.
+     * @param artifact artifact to update.
+     * @param file     file which will replace existing one.
      * @return updated artifact.
      */
-    public ArtifactDTO updateArtifactFile(ArtifactDTO artifact, FileInputStream inputStream) {
-        throw new NotImplementedException();
+    public ArtifactDTO updateArtifactFile(ArtifactDTO artifact, File file) {
+        validateId(artifact.getId());
+        if (file == null) {
+            throw new NullPointerException("File is null.");
+        }
+        if (!file.exists()) {
+            throw new IllegalArgumentException("File does not exists.");
+        }
+        FileSystemResource fileSystemResource = new FileSystemResource(file);
+        LinkedMultiValueMap<String, Object> requestParameterMap = new LinkedMultiValueMap<>();
+        requestParameterMap.add("file", fileSystemResource);
+
+        ResourceMapping artifactUpdateFile = ResourceMapping.ARTIFACT_UPDATE_FILE;
+        artifactUpdateFile.setUrlParameters(new String[]{artifact.getId().toString()});
+        return restClient.executeMultipartRequest(tokenDTO, artifactUpdateFile, requestParameterMap);
     }
 
     /**
@@ -154,7 +219,10 @@ public class SCFClient extends AbstractClient {
      * @param artifact artifact to delete.
      */
     public void deleteArtifact(ArtifactDTO artifact) {
-        throw new NotImplementedException();
+        validateId(artifact.getId());
+        ResourceMapping artifactDelete = ResourceMapping.ARTIFACT_DELETE;
+        artifactDelete.setUrlParameters(new String[]{artifact.getId().toString()});
+        restClient.executeRequest(tokenDTO, artifactDelete, artifact);
     }
 
 }

@@ -49,6 +49,10 @@ public class ArtifactProcessor implements Processor<ArtifactDTO> {
     @Override
     public ArtifactDTO update(ArtifactDTO dto, AuthUser user) {
         checkPermission(dto.getUser().getId(), user.getId());
+        if(dto.getFileBytes() == null) {
+            ArtifactDTO currentDTO = get(dto.getId());
+            dto.setFileBytes(currentDTO.getFileBytes());
+        }
         ArtifactEntity artifactEntity = artifactDAO.update(artifactConverter.convertToEntity(dto));
         return artifactConverter.convertToDTO(artifactEntity);
     }
