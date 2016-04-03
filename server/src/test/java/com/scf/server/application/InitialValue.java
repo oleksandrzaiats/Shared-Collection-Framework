@@ -28,7 +28,7 @@ public class InitialValue {
     public static UserEntity getUserEntity() {
         UserEntity userEntity = new UserEntity();
         userEntity.setName("test");
-        userEntity.setLogin("login");
+        userEntity.setLogin(String.valueOf(System.currentTimeMillis()));
         userEntity.setRole(UserRole.ROLE_USER.toString());
         userEntity.setPassword(PasswordHelper.encodePassword("123123"));
 

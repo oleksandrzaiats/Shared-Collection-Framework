@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.List;
 
-@Transactional(readOnly = false)
+@Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = SpringRootConfig.class)
 @WebAppConfiguration

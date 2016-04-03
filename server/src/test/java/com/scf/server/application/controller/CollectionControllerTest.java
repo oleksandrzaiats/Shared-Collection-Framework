@@ -20,6 +20,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -27,6 +28,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -84,6 +87,7 @@ public class CollectionControllerTest extends AbstractControllerTest {
         artifactDTOs.add(artifactDTO);
         collectionDTO = getCollection(userDTO, artifactDTOs, new ArrayList<>());
 
+
         assertNotNull(userDTO.getId());
         assertNotNull(artifactDTO.getId());
         assertNotNull(collectionDTO.getId());
@@ -91,7 +95,6 @@ public class CollectionControllerTest extends AbstractControllerTest {
 
     @After
     public void tearDown() {
-        collectionProcessor.delete(collectionDTO.getId(), authUser);
         userProcessor.delete(userDTO.getId(), authUser);
     }
 
@@ -117,6 +120,8 @@ public class CollectionControllerTest extends AbstractControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+
+        collectionProcessor.delete(collectionDTO.getId(), authUser);
     }
 
     @Test
@@ -140,6 +145,8 @@ public class CollectionControllerTest extends AbstractControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+
+        collectionProcessor.delete(collectionDTO.getId(), authUser);
     }
 
     @Test
@@ -164,16 +171,25 @@ public class CollectionControllerTest extends AbstractControllerTest {
         List<CollectionDTO> collectionDTOs = new ArrayList<>();
         collectionDTOs.add(collectionDTO);
 
-        CollectionDTO newCollectionDTO = getCollection(userDTO, artifactDTOs, collectionDTOs);
+        CollectionDTO newCollectionDTO = new CollectionDTO();
+        newCollectionDTO.setName("test");
+        newCollectionDTO.setUser(userDTO);
+        newCollectionDTO.setArtifactList(artifactDTOs);
+        newCollectionDTO.setCollectionList(collectionDTOs);
+        newCollectionDTO.setKey("test");
 
-        this.mockMvc.perform(
+        MvcResult result = this.mockMvc.perform(
                 post("/collection/")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(this.objectMapper.writeValueAsString(newCollectionDTO)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk()).andReturn();
 
-        collectionDTO = newCollectionDTO;
+        String content = result.getResponse().getContentAsString();
+        ObjectMapper mapper = new ObjectMapper();
+        collectionDTO = mapper.readValue(content, CollectionDTO.class);
+
+        collectionProcessor.delete(collectionDTO.getId(), authUser);
     }
 
     @Test
@@ -201,6 +217,8 @@ public class CollectionControllerTest extends AbstractControllerTest {
                         .content(this.objectMapper.writeValueAsString(collectionDTO)))
                 .andExpect(status().isOk());
 
+        collectionProcessor.delete(collectionDTO.getId(), authUser);
+
     }
 
     @Test
@@ -220,7 +238,6 @@ public class CollectionControllerTest extends AbstractControllerTest {
         this.mockMvc.perform(
                 delete("/collection/" + newCollectionDTO.getId()))
                 .andExpect(status().isNoContent());
-
     }
 
 
