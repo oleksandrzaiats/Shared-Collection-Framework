@@ -52,7 +52,7 @@ src
 
 [[overview-http-verbs]]
 == HTTP verbs
-Shared Collection Framework tries to adhere as closely as possible to standard HTTP and REST conventions in its use of HTTP verbs.
+For each request except for login and registration(create-user) request a user token should be send in request header (X-AUTH-TOKEN).
 |===
 | Verb | Usage
 
@@ -95,19 +95,34 @@ Shared Collection Framework tries to adhere as closely as possible to standard H
 [[project-overview]]
 = Request and response examples
 
-[[resource-create-artifact]]
-== Create new artifact
-A `POST` request to create new artifact.
+[[resource-create-user]]
+== Create new user
+A `POST` request to create new user.
 
-include::{snippets}/create-artifact/response-fields.adoc[]
+include::{snippets}/create-user/response-fields.adoc[]
 
 === Example request
 
-include::{snippets}/create-artifact/curl-request.adoc[]
+include::{snippets}/create-user/curl-request.adoc[]
 
 === Example response
 
-include::{snippets}/create-artifact/http-response.adoc[]
+include::{snippets}/create-user/http-response.adoc[]
+
+
+[[resource-login]]
+== Login by user name and password
+A `POST` request to login to the system.
+
+include::{snippets}/login-user/response-fields.adoc[]
+
+=== Example request
+
+include::{snippets}/login-user/curl-request.adoc[]
+
+=== Example response
+
+include::{snippets}/login-user/http-response.adoc[]
 
 
 [[resource-create-collection]]
@@ -125,78 +140,22 @@ include::{snippets}/create-collection/curl-request.adoc[]
 include::{snippets}/create-collection/http-response.adoc[]
 
 
-[[resource-create-user]]
-== Create new user
-A `POST` request to create new user.
+[[resource-get-all-collections]]
+== Get collection all collections.
+A `GET` request to get all collections.
 
-include::{snippets}/create-user/response-fields.adoc[]
-
-=== Example request
-
-include::{snippets}/create-user/curl-request.adoc[]
-
-=== Example response
-
-include::{snippets}/create-user/http-response.adoc[]
-
-
-[[resource-delete-artifact]]
-== Delete artifact by id
-A `DELETE` request to delete artifact by id.
+include::{snippets}/get-all-collections/response-fields.adoc[]
 
 === Example request
 
-include::{snippets}/delete-artifact/curl-request.adoc[]
+include::{snippets}/get-all-collections/curl-request.adoc[]
 
 === Example response
 
-include::{snippets}/delete-artifact/http-response.adoc[]
+include::{snippets}/get-all-collections/http-response.adoc[]
 
 
-[[resource-delete-collection]]
-== Delete collection by id
-A `DELETE` request to delete collection by id.
-
-=== Example request
-
-include::{snippets}/delete-collection/curl-request.adoc[]
-
-=== Example response
-
-include::{snippets}/delete-collection/http-response.adoc[]
-
-
-[[resource-get-artifacts]]
-== Get all artifacts
-A `GET` request to get all artifacts.
-
-include::{snippets}/get-all-artifacts/response-fields.adoc[]
-
-=== Example request
-
-include::{snippets}/get-all-artifacts/curl-request.adoc[]
-
-=== Example response
-
-include::{snippets}/get-all-artifacts/http-response.adoc[]
-
-
-[[resource-get-artifact]]
-== Get artifact by id
-A `GET` request to get artifact by id.
-
-include::{snippets}/get-artifact-by-id/response-fields.adoc[]
-
-=== Example request
-
-include::{snippets}/get-artifact-by-id/curl-request.adoc[]
-
-=== Example response
-
-include::{snippets}/get-artifact-by-id/http-response.adoc[]
-
-
-[[resource-get-collections]]
+[[resource-get-collection]]
 == Get collection by id
 A `GET` request to get collection by id.
 
@@ -226,32 +185,77 @@ include::{snippets}/get-collection-by-shared-key/curl-request.adoc[]
 include::{snippets}/get-collection-by-shared-key/http-response.adoc[]
 
 
-[[resource-get-file]]
-== Get file by artifact id
-A `GET` request to get file by artifact id.
+[[resource-update-collection]]
+== Update collection
+A `PUT` request updates an existing collection.
+
+include::{snippets}/update-collection/response-fields.adoc[]
 
 === Example request
 
-include::{snippets}/get-file/curl-request.adoc[]
+include::{snippets}/update-collection/curl-request.adoc[]
 
 === Example response
 
-include::{snippets}/get-file/http-response.adoc[]
+include::{snippets}/update-collection/http-response.adoc[]
 
 
-[[resource-login]]
-== Login by user name and password
-A `POST` request to login to the system.
-
-include::{snippets}/login-user/response-fields.adoc[]
+[[resource-delete-collection]]
+== Delete collection by id
+A `DELETE` request to delete collection by id.
 
 === Example request
 
-include::{snippets}/login-user/curl-request.adoc[]
+include::{snippets}/delete-collection/curl-request.adoc[]
 
 === Example response
 
-include::{snippets}/login-user/http-response.adoc[]
+include::{snippets}/delete-collection/http-response.adoc[]
+
+
+[[resource-create-artifact]]
+== Create new artifact
+A `POST` request to create new artifact.
+
+include::{snippets}/create-artifact/response-fields.adoc[]
+
+=== Example request
+
+include::{snippets}/create-artifact/curl-request.adoc[]
+
+=== Example response
+
+include::{snippets}/create-artifact/http-response.adoc[]
+
+
+[[resource-get-artifacts]]
+== Get all artifacts in collection
+A `GET` request to get all artifacts in collection.
+
+include::{snippets}/get-all-artifacts/response-fields.adoc[]
+
+=== Example request
+
+include::{snippets}/get-all-artifacts/curl-request.adoc[]
+
+=== Example response
+
+include::{snippets}/get-all-artifacts/http-response.adoc[]
+
+
+[[resource-get-artifact]]
+== Get artifact by id
+A `GET` request to get artifact by id.
+
+include::{snippets}/get-artifact-by-id/response-fields.adoc[]
+
+=== Example request
+
+include::{snippets}/get-artifact-by-id/curl-request.adoc[]
+
+=== Example response
+
+include::{snippets}/get-artifact-by-id/http-response.adoc[]
 
 
 [[resource-update-artifact]]
@@ -268,16 +272,28 @@ include::{snippets}/update-artifact/curl-request.adoc[]
 
 include::{snippets}/update-artifact/http-response.adoc[]
 
-[[resource-update-collection]]
-== Update collection
-A `PUT` request updates an existing collection.
 
-include::{snippets}/update-collection/response-fields.adoc[]
+[[resource-get-file]]
+== Get file by artifact id
+A `GET` request to get file by artifact id.
 
 === Example request
 
-include::{snippets}/update-collection/curl-request.adoc[]
+include::{snippets}/get-file/curl-request.adoc[]
 
 === Example response
 
-include::{snippets}/update-collection/http-response.adoc[]
+include::{snippets}/get-file/http-response.adoc[]
+
+
+[[resource-delete-artifact]]
+== Delete artifact by id
+A `DELETE` request to delete artifact by id.
+
+=== Example request
+
+include::{snippets}/delete-artifact/curl-request.adoc[]
+
+=== Example response
+
+include::{snippets}/delete-artifact/http-response.adoc[]

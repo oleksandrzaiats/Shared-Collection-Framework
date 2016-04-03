@@ -67,14 +67,14 @@ public class CollectionProcessor implements Processor<CollectionDTO> {
             throw new RecordNotFoundException(ErrorCode.COLLECTION_NOT_FOUND);
         }
         checkPermission(collectionEntity.getUser().getId(), user.getId());
-        collectionDAO.delete(collectionEntity);
         deleteCollection(collectionEntity);
+        collectionDAO.delete(collectionEntity);
     }
 
     private void deleteCollection(CollectionEntity collectionEntity) {
         for (CollectionEntity entity : collectionEntity.getCollectionList()) {
-            collectionDAO.delete(entity);
             deleteCollection(entity);
+            collectionDAO.delete(entity);
         }
     }
 

@@ -33,6 +33,7 @@ public class CollectionEntity implements CommonEntity {
     private List<ArtifactEntity> artifactList;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "col_col")
     private List<CollectionEntity> collectionList;
 
     @ManyToOne(fetch = FetchType.EAGER)

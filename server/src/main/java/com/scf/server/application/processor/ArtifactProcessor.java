@@ -1,5 +1,6 @@
 package com.scf.server.application.processor;
 
+import com.scf.server.application.model.dao.CollectionDAO;
 import com.scf.shared.dto.ArtifactDTO;
 import com.scf.server.application.model.entity.ArtifactEntity;
 import com.scf.server.application.security.AuthUser;
@@ -24,6 +25,9 @@ public class ArtifactProcessor implements Processor<ArtifactDTO> {
 
     @Autowired
     ArtifactConverter artifactConverter;
+
+    @Autowired
+    CollectionDAO collectionDAO;
 
     @Override
     public List<ArtifactDTO> getAll(AuthUser user) {
@@ -64,6 +68,12 @@ public class ArtifactProcessor implements Processor<ArtifactDTO> {
             throw new RecordNotFoundException(ErrorCode.ARTIFACT_NOT_FOUND);
         }
         checkPermission(artifactEntity.getUser().getId(), user.getId());
+        collectionDAO.getList(new ArrayList<>()).forEach(collectionEntity -> {
+            if (collectionEntity.getArtifactList().contains(artifactEntity)) {
+                collectionEntity.getArtifactList().remove(artifactEntity);
+                collectionDAO.update(collectionEntity);
+            }
+        });
         artifactDAO.delete(artifactEntity);
     }
 }
