@@ -95,6 +95,16 @@ Shared Collection Framework tries to adhere as closely as possible to standard H
 [[project-overview]]
 = Request and response examples
 
+[[project-overview-desc]]
+== Description
+Contains all request and response examples with description.
+For all queries you should use https://188.166.160.8/api/v1.0/ url instead of http://localhost:8080/.
+
+[[resource-user]]
+= User
+
+Contains all operation regarding to user.
+
 [[resource-create-user]]
 == Create new user
 A `POST` request to create new user.
@@ -124,6 +134,11 @@ include::{snippets}/login-user/curl-request.adoc[]
 
 include::{snippets}/login-user/http-response.adoc[]
 
+[[resource-collection]]
+= Collection
+
+[[resource-collection-desc]]
+Contains all operation regarding to collection.
 
 [[resource-create-collection]]
 == Create new collection
@@ -141,7 +156,7 @@ include::{snippets}/create-collection/http-response.adoc[]
 
 
 [[resource-get-all-collections]]
-== Get collection all collections.
+== Get all collections for current user
 A `GET` request to get all collections.
 
 include::{snippets}/get-all-collections/response-fields.adoc[]
@@ -212,6 +227,11 @@ include::{snippets}/delete-collection/curl-request.adoc[]
 
 include::{snippets}/delete-collection/http-response.adoc[]
 
+[[resource-artifact]]
+= Artifact
+
+[[resource-artifact-desc]]
+Contains all operation regarding to artifact.
 
 [[resource-create-artifact]]
 == Create new artifact
@@ -229,7 +249,7 @@ include::{snippets}/create-artifact/http-response.adoc[]
 
 
 [[resource-get-artifacts]]
-== Get all artifacts in collection
+== Get all artifacts for current user
 A `GET` request to get all artifacts in collection.
 
 include::{snippets}/get-all-artifacts/response-fields.adoc[]
