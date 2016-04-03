@@ -1,6 +1,8 @@
 package com.scf.server.application.processor;
 
 import com.scf.server.application.model.dao.CollectionDAO;
+import com.scf.server.application.security.UserRole;
+import com.scf.server.application.utils.Filtering;
 import com.scf.shared.dto.ArtifactDTO;
 import com.scf.server.application.model.entity.ArtifactEntity;
 import com.scf.server.application.security.AuthUser;
@@ -31,7 +33,12 @@ public class ArtifactProcessor implements Processor<ArtifactDTO> {
 
     @Override
     public List<ArtifactDTO> getAll(AuthUser user) {
-        List<ArtifactEntity> artifactEntityList = artifactDAO.getList(new ArrayList<>());
+        List<Filtering> filteringList = new ArrayList<>();
+        if (!user.getRoles().contains(UserRole.ROLE_ADMIN)) {
+            Filtering userFilter = new Filtering("user_id", "=", user.getId().toString());
+            filteringList.add(userFilter);
+        }
+        List<ArtifactEntity> artifactEntityList = artifactDAO.getList(filteringList);
         return artifactConverter.convertToDTOList(artifactEntityList);
     }
 
