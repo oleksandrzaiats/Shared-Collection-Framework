@@ -9,7 +9,10 @@ import com.scf.server.configuration.SpringRootConfig;
 import com.scf.shared.dto.ArtifactDTO;
 import com.scf.shared.dto.CollectionDTO;
 import com.scf.shared.dto.UserDTO;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -28,8 +31,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -105,7 +106,7 @@ public class CollectionControllerTest extends AbstractControllerTest {
                         fieldWithPath("id").description("Collection's id"),
                         fieldWithPath("name").description("Collection's name"),
                         fieldWithPath("key").description("Collection's key"),
-                        fieldWithPath("user").description("Collection's user"),
+                        fieldWithPath("user").description("Owner of collection"),
                         fieldWithPath("collectionList").description("List of collections which are included to the collection"),
                         fieldWithPath("artifactList").description("List of artifacts which are included to the collection")
                 )
@@ -131,7 +132,7 @@ public class CollectionControllerTest extends AbstractControllerTest {
                         fieldWithPath("id").description("Collection's id"),
                         fieldWithPath("name").description("Collection's name"),
                         fieldWithPath("key").description("Collection's key"),
-                        fieldWithPath("user").description("Collection's user"),
+                        fieldWithPath("user").description("Owner of collection"),
                         fieldWithPath("collectionList").description("List of collections which are included to the collection"),
                         fieldWithPath("artifactList").description("List of artifacts which are included to the collection")
                 )
@@ -156,7 +157,7 @@ public class CollectionControllerTest extends AbstractControllerTest {
                         fieldWithPath("id").description("Collection's id"),
                         fieldWithPath("name").description("Collection's name"),
                         fieldWithPath("key").description("Collection's key"),
-                        fieldWithPath("user").description("Collection's user"),
+                        fieldWithPath("user").description("Owner of collection"),
                         fieldWithPath("collectionList").description("List of collections which are included to the collection"),
                         fieldWithPath("artifactList").description("List of artifacts which are included to the collection")
                 )
@@ -199,7 +200,7 @@ public class CollectionControllerTest extends AbstractControllerTest {
                         fieldWithPath("id").description("Collection's id"),
                         fieldWithPath("name").description("Collection's name"),
                         fieldWithPath("key").description("Collection's key"),
-                        fieldWithPath("user").description("Collection's user"),
+                        fieldWithPath("user").description("Owner of collection"),
                         fieldWithPath("collectionList").description("List of collections which are included to the collection"),
                         fieldWithPath("artifactList").description("List of artifacts which are included to the collection")
                 )
@@ -240,6 +241,30 @@ public class CollectionControllerTest extends AbstractControllerTest {
                 .andExpect(status().isNoContent());
     }
 
+    @Test
+    public void getAllCollections() throws Exception {
+        this.document.snippets(
+                responseFields(
+                        fieldWithPath("[].id").description("Collection's id"),
+                        fieldWithPath("[].name").description("Collection's name"),
+                        fieldWithPath("[].key").description("Collection's key"),
+                        fieldWithPath("[].user").description("Owner of collection"),
+                        fieldWithPath("[].collectionList").description("List of collections which are included to the collection"),
+                        fieldWithPath("[].artifactList").description("List of artifacts which are included to the collection")
+                )
+        );
+
+        UserAuthentication userAuthentication = new UserAuthentication(authUser);
+        SecurityContextHolder.getContext().setAuthentication(userAuthentication);
+
+        this.mockMvc.perform(
+                get("/collection/")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        collectionProcessor.delete(collectionDTO.getId(), authUser);
+    }
 
     private CollectionDTO getCollection(UserDTO userDTO, List<ArtifactDTO> artifactDTOs, List<CollectionDTO> collectionDTOs) {
         CollectionDTO collectionDTO = new CollectionDTO();
