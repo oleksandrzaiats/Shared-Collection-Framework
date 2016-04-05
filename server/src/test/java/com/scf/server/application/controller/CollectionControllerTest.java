@@ -9,7 +9,10 @@ import com.scf.server.configuration.SpringRootConfig;
 import com.scf.shared.dto.ArtifactDTO;
 import com.scf.shared.dto.CollectionDTO;
 import com.scf.shared.dto.UserDTO;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,6 +23,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -84,6 +88,7 @@ public class CollectionControllerTest extends AbstractControllerTest {
         artifactDTOs.add(artifactDTO);
         collectionDTO = getCollection(userDTO, artifactDTOs, new ArrayList<>());
 
+
         assertNotNull(userDTO.getId());
         assertNotNull(artifactDTO.getId());
         assertNotNull(collectionDTO.getId());
@@ -91,7 +96,6 @@ public class CollectionControllerTest extends AbstractControllerTest {
 
     @After
     public void tearDown() {
-        collectionProcessor.delete(collectionDTO.getId(), authUser);
         userProcessor.delete(userDTO.getId(), authUser);
     }
 
@@ -102,7 +106,7 @@ public class CollectionControllerTest extends AbstractControllerTest {
                         fieldWithPath("id").description("Collection's id"),
                         fieldWithPath("name").description("Collection's name"),
                         fieldWithPath("key").description("Collection's key"),
-                        fieldWithPath("user").description("Collection's user"),
+                        fieldWithPath("user").description("Owner of collection"),
                         fieldWithPath("collectionList").description("List of collections which are included to the collection"),
                         fieldWithPath("artifactList").description("List of artifacts which are included to the collection")
                 )
@@ -117,6 +121,8 @@ public class CollectionControllerTest extends AbstractControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+
+        collectionProcessor.delete(collectionDTO.getId(), authUser);
     }
 
     @Test
@@ -126,7 +132,7 @@ public class CollectionControllerTest extends AbstractControllerTest {
                         fieldWithPath("id").description("Collection's id"),
                         fieldWithPath("name").description("Collection's name"),
                         fieldWithPath("key").description("Collection's key"),
-                        fieldWithPath("user").description("Collection's user"),
+                        fieldWithPath("user").description("Owner of collection"),
                         fieldWithPath("collectionList").description("List of collections which are included to the collection"),
                         fieldWithPath("artifactList").description("List of artifacts which are included to the collection")
                 )
@@ -140,6 +146,8 @@ public class CollectionControllerTest extends AbstractControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+
+        collectionProcessor.delete(collectionDTO.getId(), authUser);
     }
 
     @Test
@@ -149,7 +157,7 @@ public class CollectionControllerTest extends AbstractControllerTest {
                         fieldWithPath("id").description("Collection's id"),
                         fieldWithPath("name").description("Collection's name"),
                         fieldWithPath("key").description("Collection's key"),
-                        fieldWithPath("user").description("Collection's user"),
+                        fieldWithPath("user").description("Owner of collection"),
                         fieldWithPath("collectionList").description("List of collections which are included to the collection"),
                         fieldWithPath("artifactList").description("List of artifacts which are included to the collection")
                 )
@@ -164,16 +172,25 @@ public class CollectionControllerTest extends AbstractControllerTest {
         List<CollectionDTO> collectionDTOs = new ArrayList<>();
         collectionDTOs.add(collectionDTO);
 
-        CollectionDTO newCollectionDTO = getCollection(userDTO, artifactDTOs, collectionDTOs);
+        CollectionDTO newCollectionDTO = new CollectionDTO();
+        newCollectionDTO.setName("test");
+        newCollectionDTO.setUser(userDTO);
+        newCollectionDTO.setArtifactList(artifactDTOs);
+        newCollectionDTO.setCollectionList(collectionDTOs);
+        newCollectionDTO.setKey("test");
 
-        this.mockMvc.perform(
+        MvcResult result = this.mockMvc.perform(
                 post("/collection/")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(this.objectMapper.writeValueAsString(newCollectionDTO)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk()).andReturn();
 
-        collectionDTO = newCollectionDTO;
+        String content = result.getResponse().getContentAsString();
+        ObjectMapper mapper = new ObjectMapper();
+        collectionDTO = mapper.readValue(content, CollectionDTO.class);
+
+        collectionProcessor.delete(collectionDTO.getId(), authUser);
     }
 
     @Test
@@ -183,7 +200,7 @@ public class CollectionControllerTest extends AbstractControllerTest {
                         fieldWithPath("id").description("Collection's id"),
                         fieldWithPath("name").description("Collection's name"),
                         fieldWithPath("key").description("Collection's key"),
-                        fieldWithPath("user").description("Collection's user"),
+                        fieldWithPath("user").description("Owner of collection"),
                         fieldWithPath("collectionList").description("List of collections which are included to the collection"),
                         fieldWithPath("artifactList").description("List of artifacts which are included to the collection")
                 )
@@ -200,6 +217,8 @@ public class CollectionControllerTest extends AbstractControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(this.objectMapper.writeValueAsString(collectionDTO)))
                 .andExpect(status().isOk());
+
+        collectionProcessor.delete(collectionDTO.getId(), authUser);
 
     }
 
@@ -220,9 +239,32 @@ public class CollectionControllerTest extends AbstractControllerTest {
         this.mockMvc.perform(
                 delete("/collection/" + newCollectionDTO.getId()))
                 .andExpect(status().isNoContent());
-
     }
 
+    @Test
+    public void getAllCollections() throws Exception {
+        this.document.snippets(
+                responseFields(
+                        fieldWithPath("[].id").description("Collection's id"),
+                        fieldWithPath("[].name").description("Collection's name"),
+                        fieldWithPath("[].key").description("Collection's key"),
+                        fieldWithPath("[].user").description("Owner of collection"),
+                        fieldWithPath("[].collectionList").description("List of collections which are included to the collection"),
+                        fieldWithPath("[].artifactList").description("List of artifacts which are included to the collection")
+                )
+        );
+
+        UserAuthentication userAuthentication = new UserAuthentication(authUser);
+        SecurityContextHolder.getContext().setAuthentication(userAuthentication);
+
+        this.mockMvc.perform(
+                get("/collection/")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        collectionProcessor.delete(collectionDTO.getId(), authUser);
+    }
 
     private CollectionDTO getCollection(UserDTO userDTO, List<ArtifactDTO> artifactDTOs, List<CollectionDTO> collectionDTOs) {
         CollectionDTO collectionDTO = new CollectionDTO();
