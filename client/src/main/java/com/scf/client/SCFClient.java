@@ -6,11 +6,12 @@ import com.scf.shared.dto.ArtifactDTO;
 import com.scf.shared.dto.CollectionDTO;
 import com.scf.shared.dto.TokenDTO;
 import com.scf.shared.exception.InvalidBeanException;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.util.LinkedMultiValueMap;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Base client for Shared Collection Framework.
@@ -37,7 +38,8 @@ public class SCFClient extends AbstractClient {
      * @return list of collections which are created by current user.
      */
     public List<CollectionDTO> getAllCollections() {
-        return restClient.executeRequest(tokenDTO, ResourceMapping.COLLECTION_GET_LIST, null);
+        CollectionDTO[] collectionDTOs = restClient.executeRequest(tokenDTO, ResourceMapping.COLLECTION_GET_LIST, null);
+        return Arrays.asList(collectionDTOs);
     }
 
     /**
@@ -108,7 +110,8 @@ public class SCFClient extends AbstractClient {
      * @return list of artifacts which are created by current user.
      */
     public List<ArtifactDTO> getAllArtifacts() {
-        return restClient.executeRequest(tokenDTO, ResourceMapping.ARTIFACT_GET_LIST, null);
+        ArtifactDTO[] artifactDTOs = restClient.executeRequest(tokenDTO, ResourceMapping.ARTIFACT_GET_LIST, null);
+        return Arrays.asList(artifactDTOs);
     }
 
     /**
@@ -170,10 +173,9 @@ public class SCFClient extends AbstractClient {
         if (!file.exists()) {
             throw new IllegalArgumentException("File does not exists.");
         }
-        FileSystemResource fileSystemResource = new FileSystemResource(file);
-        LinkedMultiValueMap<String, Object> requestParameterMap = new LinkedMultiValueMap<>();
-        requestParameterMap.add("file", fileSystemResource);
-        requestParameterMap.add("name", artifactName);
+        Map<String, Object> requestParameterMap = new HashMap<>();
+        requestParameterMap.put("file", file);
+        requestParameterMap.put("name", artifactName);
 
         return restClient.executeMultipartRequest(tokenDTO, ResourceMapping.ARTIFACT_POST, requestParameterMap);
     }
@@ -204,10 +206,8 @@ public class SCFClient extends AbstractClient {
         if (!file.exists()) {
             throw new IllegalArgumentException("File does not exists.");
         }
-        FileSystemResource fileSystemResource = new FileSystemResource(file);
-        LinkedMultiValueMap<String, Object> requestParameterMap = new LinkedMultiValueMap<>();
-        requestParameterMap.add("file", fileSystemResource);
-
+        Map<String, Object> requestParameterMap = new HashMap<>();
+        requestParameterMap.put("file", file);
         ResourceMapping artifactUpdateFile = ResourceMapping.ARTIFACT_UPDATE_FILE;
         artifactUpdateFile.setUrlParameters(new String[]{artifact.getId().toString()});
         return restClient.executeMultipartRequest(tokenDTO, artifactUpdateFile, requestParameterMap);

@@ -37,7 +37,7 @@ public class SampleMain {
         collectionDTO.setName("new_changed_name");
         collectionDTO1 = scfClient.updateCollection(collectionDTO);
 
-        File file = new File("/home/zaiats/Projects/Shared-Collection-Framework/server/src/main/resources/application.properties");
+        File file = new File("E:\\University\\5 course Sweden\\ASD\\FileFramework\\server\\src\\main\\resources\\application.properties");
         ArtifactDTO new_artifact = scfClient.createArtifact("new_artifact", file);
         new_artifact.setName("changed_One");
         new_artifact = scfClient.updateArtifact(new_artifact);
@@ -45,13 +45,12 @@ public class SampleMain {
         collectionDTO1.setArtifactList(Arrays.asList(new_artifact));
         collectionDTO1 = scfClient.updateCollection(collectionDTO1);
 
-        File file1 = new File("/home/zaiats/Projects/Shared-Collection-Framework/server/src/main/");
+        File file1 = new File("E:\\University\\5 course Sweden\\ASD\\FileFramework\\server\\src\\main\\");
         scfClient.downloadArtifactFile(new_artifact, file1);
 
-        file = new File("/home/zaiats/Projects/Shared-Collection-Framework/server/build.gradle");
+        file = new File("E:\\University\\5 course Sweden\\ASD\\FileFramework\\server\\build.gradle");
         new_artifact = scfClient.updateArtifactFile(new_artifact, file);
         scfClient.downloadArtifactFile(new_artifact, file1);
-        // TODO ConstraintViolationException appears after this method execution
         scfClient.deleteArtifact(new_artifact);
         scfClient.deleteCollection(collectionDTO1);
 

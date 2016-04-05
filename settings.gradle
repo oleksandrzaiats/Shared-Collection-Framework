@@ -3,4 +3,5 @@ include 'client'
 include 'shared'
 include 'server'
 include 'sample'
+include 'android'
 
