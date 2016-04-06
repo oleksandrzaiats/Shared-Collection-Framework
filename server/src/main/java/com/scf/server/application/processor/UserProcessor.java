@@ -2,6 +2,7 @@ package com.scf.server.application.processor;
 
 import com.scf.server.application.model.converter.UserConverter;
 import com.scf.server.application.security.AuthUser;
+import com.scf.server.application.utils.Filtering;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.scf.server.application.model.dao.UserDAO;
@@ -25,7 +26,7 @@ public class UserProcessor implements Processor<UserDTO> {
 
     @Override
     public List<UserDTO> getAll(AuthUser user) {
-        return userConverter.convertToDTOList(userDAO.getList(new ArrayList<>()));
+        return userConverter.convertToDTOList(userDAO.getList(new ArrayList<Filtering>()));
     }
 
     @Override
