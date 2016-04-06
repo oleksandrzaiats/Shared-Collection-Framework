@@ -2,6 +2,7 @@ package com.scf.android.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -58,6 +59,14 @@ public class LoginActivity extends AbstractActivity {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+
+        Button mRegisterButton = (Button) findViewById(R.id.registration_button);
+        mRegisterButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptRegistration();
             }
         });
 
@@ -139,6 +148,11 @@ public class LoginActivity extends AbstractActivity {
             };
             scfAsyncTask.execute();
         }
+    }
+
+    private void attemptRegistration() {
+        Intent registration = new Intent(LoginActivity.this, RegistrationActivity.class);
+        startActivity(registration);
     }
 
     private boolean isEmailValid(String login) {
