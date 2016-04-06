@@ -13,7 +13,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.scf.android.R;
+import com.scf.android.SCFApplication;
 import com.scf.client.AuthClient;
+import com.scf.client.SCFClient;
 import com.scf.client.config.Configuration;
 import com.scf.client.config.ConfigurationFactory;
 import com.scf.shared.dto.TokenDTO;
@@ -112,7 +114,11 @@ public class LoginActivity extends AbstractActivity {
             SCFAsyncTask<TokenDTO> scfAsyncTask = new SCFAsyncTask<TokenDTO>() {
                 @Override
                 void onSuccess(TokenDTO value) {
+                    SCFApplication application = (SCFApplication) LoginActivity.this.getApplication();
+                    application.saveToken(value);
+                    // TODO ONLY FOR DEBUGGING
                     System.out.println(value.getToken());
+                    SCFClient scfClient = application.getSCFClient();
                     Toast.makeText(LoginActivity.this, value.getToken(), Toast.LENGTH_SHORT).show();
                     showProgress(false);
                 }
