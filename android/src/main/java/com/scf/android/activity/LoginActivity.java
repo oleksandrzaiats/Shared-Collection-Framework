@@ -110,6 +110,7 @@ public class LoginActivity extends AbstractActivity {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
+
         }
 
         if (cancel) {

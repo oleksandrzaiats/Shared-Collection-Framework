@@ -109,6 +109,7 @@ public class RegistrationActivity extends AbstractActivity {
                     userDTO.setName(name);
                     return authClient.register(userDTO);
                 }
+
             };
             scfAsyncTask.execute();
         }
