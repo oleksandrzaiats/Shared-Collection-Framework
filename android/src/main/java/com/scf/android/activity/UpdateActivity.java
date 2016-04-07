@@ -41,6 +41,8 @@ public class UpdateActivity extends AbstractActivity  {
 
         mNameView = (EditText) findViewById(R.id.update_artifact_name);
         mPathView = (EditText) findViewById(R.id.update_artifact_path);
+        mUpdateFormView = findViewById(R.id.create_artifact_form);
+        mProgressView = findViewById(R.id.update_progress);
 
         Button mCreateArtifact = (Button) findViewById(R.id.update_button);
         mCreateArtifact.setOnClickListener(new View.OnClickListener() {
@@ -50,7 +52,7 @@ public class UpdateActivity extends AbstractActivity  {
             }
         });
 
-        Button mChooseArtifact = (Button) findViewById(R.id.choose_updated_button);
+        Button mChooseArtifact = (Button) findViewById(R.id.update_choose_button);
         mChooseArtifact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,31 +68,26 @@ public class UpdateActivity extends AbstractActivity  {
             Long value = extras.getLong(ARTIFACT_ID_EXTRA);
             getArtifact(value);
         }
-
-        mUpdateFormView = findViewById(R.id.create_artifact_form);
-        mProgressView = findViewById(R.id.update_progress);
     }
 
     private void getArtifact(final long id) {
-        showProgress(true);
+        //showProgress(true);
         SCFAsyncTask<ArtifactDTO> scfAsyncTask = new SCFAsyncTask<ArtifactDTO>() {
             @Override
             void onSuccess(ArtifactDTO value) {
-                //Toast.makeText(UpdateActivity.this, "Artifact is updated", Toast.LENGTH_SHORT).show();
-                showProgress(false);
+                mNameView.setText(value.getName());
             }
 
             @Override
             protected void onFailure(Exception value) {
                 super.onFailure(value);
                 Toast.makeText(UpdateActivity.this, "Failure", Toast.LENGTH_SHORT).show();
-                showProgress(false);
+                //showProgress(false);
             }
 
             @Override
             ArtifactDTO inBackground() {
                 artifact = scfClient.getArtifact(id);
-                mNameView.setText(artifact.getName());
                 return artifact;
             }
         };
@@ -171,19 +168,19 @@ public class UpdateActivity extends AbstractActivity  {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            showProgress(true);
+            //showProgress(true);
             SCFAsyncTask<ArtifactDTO> scfAsyncTask = new SCFAsyncTask<ArtifactDTO>() {
                 @Override
                 void onSuccess(ArtifactDTO value) {
                     Toast.makeText(UpdateActivity.this, "Artifact is updated", Toast.LENGTH_SHORT).show();
-                    showProgress(false);
+                    //showProgress(false);
                 }
 
                 @Override
                 protected void onFailure(Exception value) {
                     super.onFailure(value);
                     Toast.makeText(UpdateActivity.this, "Failure", Toast.LENGTH_SHORT).show();
-                    showProgress(false);
+                    //showProgress(false);
                 }
 
                 @Override
@@ -193,10 +190,11 @@ public class UpdateActivity extends AbstractActivity  {
 
                     if (path != null && !path.equals("")) {
                         File file = new File(path);
-                        return scfClient.updateArtifactFile(updatedArtifact, file);
+                        updatedArtifact = scfClient.updateArtifactFile(updatedArtifact, file);
                     }
 
-                    return scfClient.updateArtifact(updatedArtifact);
+                    updatedArtifact = scfClient.updateArtifact(updatedArtifact);
+                    return updatedArtifact;
                 }
             };
             scfAsyncTask.execute();

@@ -156,7 +156,7 @@ public class CreateActivity extends AbstractActivity {
                 showProgress(true);
                 return scfClient.updateCollection(collectionDTO);
             }
-        };
+        }.execute();
     }
 
     @Override

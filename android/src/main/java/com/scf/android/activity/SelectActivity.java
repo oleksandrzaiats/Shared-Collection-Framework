@@ -44,7 +44,7 @@ public class SelectActivity extends AbstractActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            Long value = extras.getLong("artifact_id");
+            Long value = extras.getLong(UpdateActivity.ARTIFACT_ID_EXTRA);
             getArtifact(value);
         }
 

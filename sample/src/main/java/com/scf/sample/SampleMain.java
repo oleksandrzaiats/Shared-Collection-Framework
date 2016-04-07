@@ -21,8 +21,8 @@ public class SampleMain {
         AuthClient authClient = new AuthClient(configuration);
 
         UserDTO userDTO = new UserDTO();
-        userDTO.setLogin("test");
-        userDTO.setPassword("testtest");
+        userDTO.setLogin("zzzzzz");
+        userDTO.setPassword("111111");
         userDTO.setName("test");
 
 //        testRegister(authClient, userDTO);

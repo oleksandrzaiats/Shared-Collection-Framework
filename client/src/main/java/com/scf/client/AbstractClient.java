@@ -29,6 +29,7 @@ public abstract class AbstractClient {
      * @throws InvalidBeanException if bean is not valid
      */
     protected <T> void validateBean(T bean) {
+        /*
         ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
         Validator validator = vf.getValidator();
         Set<ConstraintViolation<T>> violationSet = validator.validate(bean);
@@ -36,7 +37,7 @@ public abstract class AbstractClient {
         if (iterator.hasNext()) {
             ConstraintViolation<T> next = iterator.next();
             throw new InvalidBeanException(StringUtils.formatValidationError(next));
-        }
+        }*/
     }
 
     /**

@@ -126,10 +126,8 @@ public class LoginActivity extends AbstractActivity {
                 void onSuccess(TokenDTO value) {
                     SCFApplication application = (SCFApplication) LoginActivity.this.getApplication();
                     application.saveToken(value);
-                    // TODO ONLY FOR DEBUGGING
-                    System.out.println(value.getToken());
-                    SCFClient scfClient = application.getSCFClient();
-                    Toast.makeText(LoginActivity.this, value.getToken(), Toast.LENGTH_SHORT).show();
+                    Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
+                    LoginActivity.this.startActivity(myIntent);
                     showProgress(false);
                 }
 
