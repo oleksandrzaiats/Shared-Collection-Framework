@@ -2,6 +2,7 @@ package com.scf.android.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -30,6 +31,7 @@ public class CreateActivity extends AbstractActivity {
     private View mCreateFormView;
 
     private static final int FILE_SELECT_CODE = 0;
+    public static final String ARTIFACT_ID_EXTRA = "artifact_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +105,11 @@ public class CreateActivity extends AbstractActivity {
                 void onSuccess(ArtifactDTO value) {
                     Toast.makeText(CreateActivity.this, "Artifact is created", Toast.LENGTH_SHORT).show();
                     showProgress(false);
+
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra(ARTIFACT_ID_EXTRA,value.getId());
+                    setResult(Activity.RESULT_OK,returnIntent);
+                    finish();
                 }
 
                 @Override
