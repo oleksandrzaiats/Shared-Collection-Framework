@@ -9,6 +9,10 @@ repositories {
 
 archivesBaseName = 'scf-client'
 
+jar {
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
 dependencies {
     compile project(':shared')
     compile("com.fasterxml.jackson.core:jackson-core:2.7.3")
