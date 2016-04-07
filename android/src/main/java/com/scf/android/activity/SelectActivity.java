@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -44,12 +45,37 @@ public class SelectActivity extends AbstractActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             Long value = extras.getLong("artifact_id");
-            artifact = scfClient.getArtifact(value);
-            mArtifactName.setText(artifact.getName());
+            getArtifact(value);
         }
 
         mProgressView = findViewById(R.id.select_form);
         mProgressView = findViewById(R.id.select_progress);
+    }
+
+    private void getArtifact(final long id) {
+        showProgress(true);
+        SCFAsyncTask<ArtifactDTO> scfAsyncTask = new SCFAsyncTask<ArtifactDTO>() {
+            @Override
+            void onSuccess(ArtifactDTO value) {
+                //Toast.makeText(UpdateActivity.this, "Artifact is updated", Toast.LENGTH_SHORT).show();
+                showProgress(false);
+            }
+
+            @Override
+            protected void onFailure(Exception value) {
+                super.onFailure(value);
+                Toast.makeText(SelectActivity.this, "Failure", Toast.LENGTH_SHORT).show();
+                showProgress(false);
+            }
+
+            @Override
+            ArtifactDTO inBackground() {
+                artifact = scfClient.getArtifact(id);
+                mArtifactName.setText(artifact.getName());
+                return artifact;
+            }
+        };
+        scfAsyncTask.execute();
     }
 
     private void downloadArtifact() {
