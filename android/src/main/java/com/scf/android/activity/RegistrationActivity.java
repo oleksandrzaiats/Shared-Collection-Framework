@@ -14,9 +14,6 @@ import com.scf.client.config.ConfigurationFactory;
 import com.scf.shared.dto.TokenDTO;
 import com.scf.shared.dto.UserDTO;
 
-/**
- * Created by olefir on 2016-04-06.
- */
 public class RegistrationActivity extends AbstractActivity {
 
     private EditText mEmailView;

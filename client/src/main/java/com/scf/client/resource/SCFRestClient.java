@@ -190,8 +190,10 @@ public class SCFRestClient {
             Object value = entry.getValue();
             if (value instanceof File) {
                 File fileValue = (File) value;
+                String type = "application/octet-stream";
+                //old: new MimetypesFileTypeMap().getContentType(fileValue)
                 multipartBuilder.addFormDataPart(entry.getKey(), fileValue.getName(),
-                        RequestBody.create(MediaType.parse(new MimetypesFileTypeMap().getContentType(fileValue)), fileValue));
+                        RequestBody.create(MediaType.parse(type), fileValue));
 
             } else {
                 multipartBuilder.addFormDataPart(entry.getKey(), value.toString());
