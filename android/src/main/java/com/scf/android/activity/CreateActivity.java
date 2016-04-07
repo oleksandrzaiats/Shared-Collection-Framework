@@ -17,9 +17,11 @@ import com.scf.android.R;
 import com.scf.android.SCFApplication;
 import com.scf.client.SCFClient;
 import com.scf.shared.dto.ArtifactDTO;
+import com.scf.shared.dto.CollectionDTO;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 public class CreateActivity extends AbstractActivity {
 
@@ -29,6 +31,7 @@ public class CreateActivity extends AbstractActivity {
 
     private View mProgressView;
     private View mCreateFormView;
+    private CollectionDTO collectionDTO;
 
     private static final int FILE_SELECT_CODE = 0;
     public static final String ARTIFACT_ID_EXTRA = "artifact_id";
@@ -56,6 +59,11 @@ public class CreateActivity extends AbstractActivity {
                 createArtifact();
             }
         });
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            collectionDTO = (CollectionDTO) extras.get("collection");
+        }
 
         SCFApplication application = (SCFApplication) CreateActivity.this.getApplication();
         scfClient = application.getSCFClient();
@@ -105,6 +113,12 @@ public class CreateActivity extends AbstractActivity {
                 void onSuccess(ArtifactDTO value) {
                     Toast.makeText(CreateActivity.this, "Artifact is created", Toast.LENGTH_SHORT).show();
                     showProgress(false);
+                    if(collectionDTO.getArtifactList() == null) {
+                        collectionDTO.setArtifactList(new ArrayList<ArtifactDTO>());
+                    }
+                    collectionDTO.getArtifactList().add(value);
+
+                    updateCollection(collectionDTO);
 
                     Intent returnIntent = new Intent();
                     returnIntent.putExtra(ARTIFACT_ID_EXTRA,value.getId());
@@ -128,6 +142,21 @@ public class CreateActivity extends AbstractActivity {
             scfAsyncTask.execute();
 
         }
+    }
+
+    private void updateCollection(final CollectionDTO collectionDTO) {
+        new SCFAsyncTask<CollectionDTO>() {
+            @Override
+            void onSuccess(CollectionDTO value) {
+                showProgress(false);
+            }
+
+            @Override
+            CollectionDTO inBackground() {
+                showProgress(true);
+                return scfClient.updateCollection(collectionDTO);
+            }
+        };
     }
 
     @Override
